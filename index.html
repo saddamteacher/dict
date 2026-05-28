@@ -1,0 +1,1417 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Saddam Teacher — Python Dict (Lug'atlar) | Premium O'quv Platformasi</title>
+<style>
+/* ===== CSS RESET & BASE ===== */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+--bg:#0a0a0f;--bg2:#12121a;--bg3:#1a1a2e;--card:#14141f;
+--glass:rgba(20,20,35,0.65);--glass-border:rgba(255,255,255,0.08);
+--neon:#00ff88;--cyan:#00e5ff;--purple:#a855f7;--pink:#f472b6;
+--text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;
+--green-glow:0 0 20px rgba(0,255,136,0.3);
+--cyan-glow:0 0 20px rgba(0,229,255,0.3);
+--purple-glow:0 0 20px rgba(168,85,247,0.3);
+--radius:16px;--radius-sm:10px;
+--font-main:'Segoe UI',system-ui,-apple-system,sans-serif;
+--font-code:'Cascadia Code','Fira Code','JetBrains Mono','Consolas',monospace;
+--sidebar-w:280px;--navbar-h:64px;
+}
+.light-mode{
+--bg:#f0f2f5;--bg2:#ffffff;--bg3:#e8eaed;--card:#ffffff;
+--glass:rgba(255,255,255,0.7);--glass-border:rgba(0,0,0,0.08);
+--text:#1e293b;--text2:#475569;--text3:#64748b;
+--neon:#059669;--cyan:#0891b2;--purple:#7c3aed;
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:var(--font-main);background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden;transition:background .4s,color .4s}
+a{color:var(--cyan);text-decoration:none}
+h1,h2,h3,h4{font-weight:700;line-height:1.3}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--neon);border-radius:3px}
+::selection{background:var(--neon);color:#000}
+
+/* ===== LOADER ===== */
+#loader{position:fixed;inset:0;z-index:10000;background:#0a0a0f;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .6s}
+#loader.hidden{opacity:0;pointer-events:none}
+.loader-logo{font-size:2rem;font-weight:800;background:linear-gradient(135deg,var(--neon),var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:24px;animation:pulse-text 1.5s infinite}
+.loader-bar{width:200px;height:4px;background:var(--bg3);border-radius:2px;overflow:hidden}
+.loader-bar span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--neon),var(--cyan));border-radius:2px;animation:load-bar 2s ease-in-out forwards}
+@keyframes load-bar{to{width:100%}}
+@keyframes pulse-text{0%,100%{opacity:1}50%{opacity:.5}}
+
+/* ===== SCROLL PROGRESS ===== */
+#scroll-progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--neon),var(--cyan),var(--purple));z-index:9999;transition:width .1s;width:0}
+
+/* ===== NAVBAR ===== */
+#navbar{position:fixed;top:0;left:0;right:0;height:var(--navbar-h);background:var(--glass);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--glass-border);z-index:1000;display:flex;align-items:center;padding:0 20px;transition:all .3s}
+#navbar.scrolled{box-shadow:0 4px 30px rgba(0,0,0,0.3)}
+.nav-left{display:flex;align-items:center;gap:12px}
+.menu-btn{display:none;background:none;border:none;color:var(--text);font-size:1.5rem;cursor:pointer;padding:4px}
+.nav-logo{font-size:1.25rem;font-weight:800;background:linear-gradient(135deg,var(--neon),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;white-space:nowrap}
+.nav-logo span{font-size:.75rem;-webkit-text-fill-color:var(--text2);display:block;font-weight:400}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:12px}
+.nav-search{position:relative}
+.nav-search input{background:var(--bg3);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:8px 14px 8px 36px;color:var(--text);font-size:.85rem;width:220px;outline:none;transition:all .3s}
+.nav-search input:focus{border-color:var(--neon);box-shadow:var(--green-glow);width:280px}
+.nav-search svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--text3)}
+.theme-toggle{background:var(--bg3);border:1px solid var(--glass-border);border-radius:50%;width:38px;height:38px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text);font-size:1.1rem;transition:all .3s}
+.theme-toggle:hover{border-color:var(--neon);box-shadow:var(--green-glow)}
+
+/* ===== SIDEBAR ===== */
+#sidebar{position:fixed;top:var(--navbar-h);left:0;width:var(--sidebar-w);height:calc(100vh - var(--navbar-h));background:var(--glass);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-right:1px solid var(--glass-border);overflow-y:auto;z-index:900;transition:transform .3s;padding:16px 0}
+#sidebar .sid-title{font-size:.7rem;text-transform:uppercase;letter-spacing:2px;color:var(--text3);padding:8px 20px;margin-top:8px}
+#sidebar a{display:flex;align-items:center;gap:10px;padding:10px 20px;color:var(--text2);font-size:.88rem;transition:all .2s;border-left:3px solid transparent}
+#sidebar a:hover,#sidebar a.active{color:var(--neon);background:rgba(0,255,136,0.05);border-left-color:var(--neon)}
+#sidebar a .num{font-size:.7rem;background:var(--bg3);border-radius:4px;padding:2px 6px;font-weight:600;min-width:22px;text-align:center}
+
+/* ===== MAIN ===== */
+#main{margin-left:var(--sidebar-w);padding-top:var(--navbar-h);min-height:100vh;transition:margin .3s}
+
+/* ===== HERO ===== */
+#hero{position:relative;padding:80px 32px 60px;overflow:hidden;text-align:center}
+.hero-bg{position:absolute;inset:0;overflow:hidden}
+.hero-bg .orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:.4;animation:float 8s ease-in-out infinite}
+.hero-bg .orb:nth-child(1){width:400px;height:400px;background:var(--neon);top:-100px;left:-100px;animation-delay:0s}
+.hero-bg .orb:nth-child(2){width:350px;height:350px;background:var(--purple);bottom:-80px;right:-80px;animation-delay:2s}
+.hero-bg .orb:nth-child(3){width:300px;height:300px;background:var(--cyan);top:50%;left:50%;transform:translate(-50%,-50%);animation-delay:4s}
+@keyframes float{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-30px) scale(1.05)}66%{transform:translate(-20px,20px) scale(.95)}}
+.hero-content{position:relative;z-index:1;max-width:800px;margin:0 auto}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.2);border-radius:20px;padding:6px 16px;font-size:.8rem;color:var(--neon);margin-bottom:24px}
+.hero-title{font-size:clamp(2.5rem,6vw,4.5rem);font-weight:900;line-height:1.1;margin-bottom:20px}
+.hero-title .grad{background:linear-gradient(135deg,var(--neon),var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:gradient-shift 4s ease infinite;background-size:200% 200%}
+@keyframes gradient-shift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+.hero-sub{font-size:1.15rem;color:var(--text2);max-width:600px;margin:0 auto 32px}
+.hero-stats{display:flex;justify-content:center;gap:40px;flex-wrap:wrap;margin-top:32px}
+.hero-stat{text-align:center}
+.hero-stat .num{font-size:2rem;font-weight:800;color:var(--neon)}
+.hero-stat .label{font-size:.8rem;color:var(--text3)}
+.typing-text{font-family:var(--font-code);color:var(--cyan);font-size:1rem;min-height:1.5em}
+.typing-cursor{display:inline-block;width:2px;height:1em;background:var(--neon);margin-left:2px;animation:blink .8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+/* ===== SECTIONS ===== */
+.section{padding:60px 32px;max-width:1100px;margin:0 auto;opacity:0;transform:translateY(30px);transition:all .6s}
+.section.visible{opacity:1;transform:translateY(0)}
+.section-title{font-size:2rem;margin-bottom:8px;display:flex;align-items:center;gap:12px}
+.section-title .icon{font-size:1.5rem}
+.section-title .grad{background:linear-gradient(135deg,var(--neon),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.section-desc{color:var(--text2);margin-bottom:32px;font-size:1rem}
+
+/* ===== GLASS CARD ===== */
+.card{background:var(--glass);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--glass-border);border-radius:var(--radius);padding:24px;margin-bottom:20px;transition:all .3s}
+.card:hover{border-color:rgba(0,255,136,0.2);box-shadow:0 8px 32px rgba(0,0,0,0.3)}
+.card-title{font-size:1.1rem;font-weight:700;margin-bottom:8px;color:var(--neon)}
+.card-text{color:var(--text2);font-size:.92rem;line-height:1.8}
+
+/* ===== CODE BLOCK ===== */
+.code-block{position:relative;background:#0d1117;border:1px solid #21262d;border-radius:var(--radius-sm);overflow:hidden;margin:12px 0;font-family:var(--font-code);font-size:.85rem}
+.code-header{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;background:#161b22;border-bottom:1px solid #21262d}
+.code-header .dots{display:flex;gap:6px}
+.code-header .dots span{width:10px;height:10px;border-radius:50%}
+.code-header .dots span:nth-child(1){background:#ff5f57}
+.code-header .dots span:nth-child(2){background:#febc2e}
+.code-header .dots span:nth-child(3){background:#28c840}
+.code-header .lang{font-size:.75rem;color:#8b949e}
+.copy-btn{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.1);color:#c9d1d9;padding:4px 12px;border-radius:6px;font-size:.75rem;cursor:pointer;transition:all .2s;font-family:var(--font-main)}
+.copy-btn:hover{background:rgba(0,255,136,0.15);border-color:var(--neon);color:var(--neon)}
+.copy-btn.copied{background:rgba(0,255,136,0.2);color:var(--neon)}
+.code-body{padding:16px;overflow-x:auto;line-height:1.6;color:#c9d1d9;white-space:pre}
+/* Syntax colors */
+.kw{color:#ff7b72}.fn{color:#d2a8ff}.st{color:#a5d6ff}.cm{color:#8b949e;font-style:italic}.nb{color:#79c0ff}.nu{color:#79c0ff}.op{color:#ff7b72}.br{color:#ffa657}.dc{color:#ffa657}
+.output-block{background:#0a0f14;border:1px solid #1a2332;border-radius:var(--radius-sm);padding:12px 16px;margin:8px 0;font-family:var(--font-code);font-size:.82rem;color:var(--neon);position:relative}
+.output-label{position:absolute;top:6px;right:10px;font-size:.65rem;color:var(--text3);text-transform:uppercase;letter-spacing:1px;font-family:var(--font-main)}
+
+/* ===== HOMEWORK CARDS ===== */
+.hw-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
+.hw-card{background:var(--glass);backdrop-filter:blur(12px);border:1px solid var(--glass-border);border-radius:var(--radius);padding:20px;transition:all .3s}
+.hw-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,0.4)}
+.hw-num{font-size:.75rem;font-weight:700;color:var(--text3);margin-bottom:4px}
+.hw-title{font-weight:600;margin-bottom:8px}
+.badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:.7rem;font-weight:600}
+.badge-easy{background:rgba(0,255,136,0.15);color:var(--neon)}
+.badge-medium{background:rgba(251,191,36,0.15);color:#fbbf24}
+.badge-hard{background:rgba(239,68,68,0.15);color:#ef4444}
+
+/* ===== QUIZ ===== */
+.quiz-card{background:var(--glass);backdrop-filter:blur(12px);border:1px solid var(--glass-border);border-radius:var(--radius);padding:24px;margin-bottom:16px;transition:all .3s}
+.quiz-q{font-weight:600;margin-bottom:14px;font-size:.95rem}
+.quiz-options{display:flex;flex-direction:column;gap:8px}
+.quiz-opt{display:flex;align-items:center;gap:10px;padding:10px 14px;border:1px solid var(--glass-border);border-radius:var(--radius-sm);cursor:pointer;transition:all .2s;font-size:.88rem}
+.quiz-opt:hover{border-color:var(--cyan);background:rgba(0,229,255,0.05)}
+.quiz-opt.selected{border-color:var(--cyan);background:rgba(0,229,255,0.1)}
+.quiz-opt.correct{border-color:var(--neon);background:rgba(0,255,136,0.12);color:var(--neon)}
+.quiz-opt.wrong{border-color:#ef4444;background:rgba(239,68,68,0.12);color:#ef4444}
+.quiz-opt .letter{width:28px;height:28px;border-radius:50%;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.8rem;flex-shrink:0}
+.quiz-result{background:var(--glass);backdrop-filter:blur(12px);border:1px solid var(--glass-border);border-radius:var(--radius);padding:32px;text-align:center;display:none}
+.quiz-result.show{display:block}
+.result-score{font-size:3rem;font-weight:900;background:linear-gradient(135deg,var(--neon),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.progress-bar{width:100%;height:12px;background:var(--bg3);border-radius:6px;overflow:hidden;margin:16px 0}
+.progress-fill{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--neon),var(--cyan));transition:width 1s ease}
+
+/* ===== PROJECT CARDS ===== */
+.project-card{background:var(--glass);backdrop-filter:blur(12px);border:1px solid var(--glass-border);border-radius:var(--radius);overflow:hidden;margin-bottom:24px;transition:all .3s}
+.project-card:hover{border-color:rgba(168,85,247,0.3);box-shadow:var(--purple-glow)}
+.project-header{padding:20px 24px;border-bottom:1px solid var(--glass-border);display:flex;align-items:center;gap:12px}
+.project-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.4rem}
+.project-body{padding:24px}
+
+/* ===== FAQ ===== */
+.faq-item{border:1px solid var(--glass-border);border-radius:var(--radius-sm);margin-bottom:8px;overflow:hidden;background:var(--glass);backdrop-filter:blur(12px)}
+.faq-q{padding:16px 20px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:600;font-size:.92rem;transition:all .2s}
+.faq-q:hover{color:var(--neon)}
+.faq-q .arrow{transition:transform .3s;font-size:.8rem}
+.faq-item.open .faq-q .arrow{transform:rotate(180deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s ease;padding:0 20px}
+.faq-item.open .faq-a{max-height:500px;padding:0 20px 16px}
+.faq-a p{color:var(--text2);font-size:.88rem}
+
+/* ===== FOOTER ===== */
+#footer{background:var(--bg2);border-top:1px solid var(--glass-border);padding:40px 32px 20px;text-align:center}
+.footer-logo{font-size:1.5rem;font-weight:800;background:linear-gradient(135deg,var(--neon),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:12px}
+.footer-links{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin:16px 0}
+.footer-links a{color:var(--text3);font-size:.85rem;transition:color .2s}
+.footer-links a:hover{color:var(--neon)}
+.footer-copy{color:var(--text3);font-size:.8rem;margin-top:20px;border-top:1px solid var(--glass-border);padding-top:16px}
+
+/* ===== BACK TO TOP ===== */
+#back-top{position:fixed;bottom:24px;right:24px;width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,var(--neon),var(--cyan));color:#000;border:none;cursor:pointer;font-size:1.2rem;display:flex;align-items:center;justify-content:center;opacity:0;transform:translateY(20px);transition:all .3s;z-index:800;box-shadow:var(--green-glow)}
+#back-top.show{opacity:1;transform:translateY(0)}
+#back-top:hover{transform:translateY(-4px) scale(1.1)}
+
+/* ===== TOAST ===== */
+#toast{position:fixed;bottom:80px;right:24px;background:var(--bg3);border:1px solid var(--neon);border-radius:var(--radius-sm);padding:12px 20px;color:var(--neon);font-size:.85rem;z-index:9000;transform:translateX(120%);transition:transform .4s;box-shadow:var(--green-glow)}
+#toast.show{transform:translateX(0)}
+
+/* ===== TABS ===== */
+.tabs{display:flex;gap:4px;margin-bottom:24px;flex-wrap:wrap}
+.tab-btn{padding:8px 18px;border-radius:var(--radius-sm);background:var(--bg3);border:1px solid var(--glass-border);color:var(--text2);cursor:pointer;font-size:.85rem;transition:all .2s;font-family:var(--font-main)}
+.tab-btn.active,.tab-btn:hover{background:rgba(0,255,136,0.1);border-color:var(--neon);color:var(--neon)}
+
+/* ===== SEARCH RESULTS ===== */
+.search-results{position:absolute;top:100%;left:0;right:0;background:var(--bg2);border:1px solid var(--glass-border);border-radius:var(--radius-sm);margin-top:4px;max-height:300px;overflow-y:auto;display:none;z-index:100}
+.search-results.show{display:block}
+.search-item{padding:10px 14px;cursor:pointer;font-size:.85rem;border-bottom:1px solid var(--glass-border);transition:all .2s}
+.search-item:hover{background:rgba(0,255,136,0.05);color:var(--neon)}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:1024px){
+  #sidebar{transform:translateX(-100%)}
+  #sidebar.open{transform:translateX(0)}
+  #main{margin-left:0}
+  .menu-btn{display:block}
+  .nav-search input{width:160px}
+  .nav-search input:focus{width:200px}
+}
+@media(max-width:640px){
+  .section{padding:40px 16px}
+  #hero{padding:60px 16px 40px}
+  .hero-title{font-size:2rem}
+  .hero-stats{gap:20px}
+  .hw-grid{grid-template-columns:1fr}
+  .nav-search{display:none}
+  .tabs{overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch}
+  .tab-btn{white-space:nowrap;flex-shrink:0}
+}
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:899}
+.sidebar-overlay.show{display:block}
+
+/* Info box */
+.info-box{background:rgba(0,229,255,0.05);border-left:3px solid var(--cyan);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:14px 18px;margin:12px 0;font-size:.9rem;color:var(--text2)}
+.info-box strong{color:var(--cyan)}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-logo">🐍 Saddam Teacher</div>
+  <div class="loader-bar"><span></span></div>
+</div>
+
+<!-- SCROLL PROGRESS -->
+<div id="scroll-progress"></div>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <div class="nav-left">
+    <button class="menu-btn" onclick="toggleSidebar()" aria-label="Menu">☰</button>
+    <div class="nav-logo">🐍 Saddam Teacher<span>Python Dict — O'quv Platformasi</span></div>
+  </div>
+  <div class="nav-right">
+    <div class="nav-search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input type="text" id="searchInput" placeholder="Qidirish..." oninput="handleSearch(this.value)">
+      <div class="search-results" id="searchResults"></div>
+    </div>
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Tema">🌙</button>
+  </div>
+</nav>
+
+<!-- SIDEBAR -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+<aside id="sidebar">
+  <div class="sid-title">📚 Bo'limlar</div>
+  <a href="#hero" class="active" data-section="hero"><span class="num">🏠</span> Bosh sahifa</a>
+  <a href="#kirish" data-section="kirish"><span class="num">01</span> Kirish</a>
+  <a href="#nazariy" data-section="nazariy"><span class="num">02</span> Nazariy qism</a>
+  <a href="#sinf-ishi" data-section="sinf-ishi"><span class="num">03</span> Sinf ishi</a>
+  <a href="#uyga-vazifa" data-section="uyga-vazifa"><span class="num">04</span> Uyga vazifa</a>
+  <a href="#test" data-section="test"><span class="num">05</span> Test</a>
+  <a href="#projects" data-section="projects"><span class="num">06</span> Mini Projectlar</a>
+  <a href="#faq" data-section="faq"><span class="num">07</span> FAQ</a>
+  <div class="sid-title" style="margin-top:16px">🔗 Havolalar</div>
+  <a href="https://t.me/saddamtg" target="_blank"><span class="num">📱</span> Telegram</a>
+</aside>
+
+<!-- MAIN -->
+<div id="main">
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg">
+    <div class="orb"></div><div class="orb"></div><div class="orb"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-badge">🔥 2024–2025 Yangilangan kurs</div>
+    <h1 class="hero-title">Python <span class="grad">Dict (Lug'atlar)</span></h1>
+    <p class="hero-sub">O'zbek tilida eng to'liq va interaktiv Python Dictionary qo'llanmasi. Nazariyadan amaliyotgacha — barchasi bir joyda.</p>
+    <div class="typing-text" id="typingText"></div>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num" data-count="50">0</div><div class="label">Kod misollari</div></div>
+      <div class="hero-stat"><div class="num" data-count="30">0</div><div class="label">Mashqlar</div></div>
+      <div class="hero-stat"><div class="num" data-count="50">0</div><div class="label">Test savollari</div></div>
+      <div class="hero-stat"><div class="num" data-count="4">0</div><div class="label">Mini loyihalar</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 1. KIRISH -->
+<section id="kirish" class="section">
+  <h2 class="section-title"><span class="icon">📖</span> <span class="grad">Kirish — Dict nima?</span></h2>
+  <p class="section-desc">Python lug'atlari (dictionary) — bu kalit-qiymat juftliklarida ma'lumot saqlaydigan eng kuchli ma'lumot tuzilmalaridan biri.</p>
+
+  <div class="card">
+    <h3 class="card-title">📌 Dict nima?</h3>
+    <p class="card-text">Dict — bu <strong>kalit (key)</strong> va <strong>qiymat (value)</strong> juftliklaridan tashkil topgan o'zgaruvchan (mutable) ma'lumot turi. Jismoniy lug'atga o'xshaydi: so'z (kalit) → tarjima (qiymat).</p>
+    <div class="code-block">
+      <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang">python</span><button class="copy-btn" onclick="copyCode(this)">📋 Nusxa</button></div>
+      <div class="code-body"><span class="cm"># Oddiy dict yaratish</span>
+<span class="nb">talaba</span> = {
+    <span class="st">"ism"</span>: <span class="st">"Ali"</span>,
+    <span class="st">"yosh"</span>: <span class="nu">20</span>,
+    <span class="st">"kurs"</span>: <span class="nu">2</span>
+}
+<span class="fn">print</span>(<span class="nb">talaba</span>)</div>
+    </div>
+    <div class="output-block"><span class="output-label">Natija</span>{'ism': 'Ali', 'yosh': 20, 'kurs': 2}</div>
+  </div>
+
+  <div class="card">
+    <h3 class="card-title">🔑 Kalit va Qiymat tushunchasi</h3>
+    <p class="card-text"><strong>Kalit (Key)</strong> — bu har bir qiymatni aniqlash uchun ishlatiladigan noyob identifikator. U string, son yoki tuple bo'lishi mumkin. <strong>Qiymat (Value)</strong> — bu kalitga bog'langan ma'lumot, har qanday tur bo'lishi mumkin.</p>
+    <div class="code-block">
+      <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang">python</span><button class="copy-btn" onclick="copyCode(this)">📋 Nusxa</button></div>
+      <div class="code-body"><span class="cm"># Kalit va qiymat</span>
+<span class="nb">mahsulot</span> = {
+    <span class="st">"nomi"</span>: <span class="st">"Telefon"</span>,      <span class="cm"># kalit: "nomi", qiymat: "Telefon"</span>
+    <span class="st">"narxi"</span>: <span class="nu">5000000</span>,       <span class="cm"># kalit: "narxi", qiymat: 5000000</span>
+    <span class="st">"mavjud"</span>: <span class="kw">True</span>          <span class="cm"># kalit: "mavjud", qiymat: True</span>
+}
+<span class="fn">print</span>(<span class="nb">mahsulot</span>[<span class="st">"nomi"</span>])  <span class="cm"># Telefon</span></div>
+    </div>
+    <div class="output-block"><span class="output-label">Natija</span>Telefon</div>
+  </div>
+
+  <div class="card">
+    <h3 class="card-title">🌐 Qayerlarda ishlatiladi?</h3>
+    <p class="card-text">Dict Python dasturlashning deyarli har bir sohasida ishlatiladi:</p>
+    <ul style="color:var(--text2);padding-left:20px;margin-top:8px;font-size:.92rem">
+      <li>🔹 API javoblarini qayta ishlash (JSON)</li>
+      <li>🔹 Ma'lumotlar bazasi yozuvlari</li>
+      <li>🔹 Konfiguratsiya fayllari</li>
+      <li>🔹 Kesh (cache) tizimi</li>
+      <li>🔹 Telegram bot ishlab chiqish</li>
+      <li>🔹 Web dasturlash (Django, Flask)</li>
+      <li>🔹 Ma'lumotlar tahlili</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3 class="card-title">🔗 JSON bilan bog'liqligi</h3>
+    <p class="card-text">JSON (JavaScript Object Notation) formati Python dict bilan deyarli bir xil tuzilishga ega. API bilan ishlaganda JSON ma'lumotlar avtomatik ravishda dict ga aylanadi.</p>
+    <div class="code-block">
+      <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang">python</span><button class="copy-btn" onclick="copyCode(this)">📋 Nusxa</button></div>
+      <div class="code-body"><span class="kw">import</span> json
+
+<span class="cm"># JSON string → Dict</span>
+<span class="nb">json_str</span> = <span class="st">'{"ism": "Vali", "yosh": 25}'</span>
+<span class="nb">data</span> = json.<span class="fn">loads</span>(<span class="nb">json_str</span>)
+<span class="fn">print</span>(<span class="nb">data</span>)
+<span class="fn">print</span>(<span class="fn">type</span>(<span class="nb">data</span>))
+
+<span class="cm"># Dict → JSON string</span>
+<span class="nb">back</span> = json.<span class="fn">dumps</span>(<span class="nb">data</span>, <span class="nb">ensure_ascii</span>=<span class="kw">False</span>)
+<span class="fn">print</span>(<span class="nb">back</span>)</div>
+    </div>
+    <div class="output-block"><span class="output-label">Natija</span>{'ism': 'Vali', 'yosh': 25}
+&lt;class 'dict'&gt;
+{"ism": "Vali", "yosh": 25}</div>
+  </div>
+</section>
+
+<!-- 2. NAZARIY QISM -->
+<section id="nazariy" class="section">
+  <h2 class="section-title"><span class="icon">📚</span> <span class="grad">Nazariy qism — Dict metodlari</span></h2>
+  <p class="section-desc">Python dict ning barcha asosiy metodlari va ularning ishlatilishi.</p>
+
+  <div class="card">
+    <h3 class="card-title">🔨 dict() konstruktori bilan yaratish</h3>
+    <p class="card-text">Dict ni figurali qavslar {} yoki dict() konstruktori bilan yaratish mumkin.</p>
+    <div class="code-block">
+      <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang">python</span><button class="copy-btn" onclick="copyCode(this)">📋 Nusxa</button></div>
+      <div class="code-body"><span class="cm"># 1-usul: figurali qavslar</span>
+<span class="nb">d1</span> = {<span class="st">"a"</span>: <span class="nu">1</span>, <span class="st">"b"</span>: <span class="nu">2</span>}
+
+<span class="cm"># 2-usul: dict() konstruktori</span>
+<span class="nb">d2</span> = <span class="fn">dict</span>(<span class="nb">a</span>=<span class="nu">1</span>, <span class="nb">b</span>=<span class="nu">2</span>)
+
+<span class="cm"># 3-usul: list of tuples</span>
+<span class="nb">d3</span> = <span class="fn">dict</span>([(<span class="st">"a"</span>, <span class="nu">1</span>), (<span class="st">"b"</span>, <span class="nu">2</span>)])
+
+<span class="fn">print</span>(<span class="nb">d1</span>, <span class="nb">d2</span>, <span class="nb">d3</span>)</div>
+    </div>
+    <div class="output-block"><span class="output-label">Natija</span>{'a': 1, 'b': 2} {'a': 1, 'b': 2} {'a': 1, 'b': 2}</div>
+  </div>
+
+  <div class="card">
+    <h3 class="card-title">📥 get() — Xavfsiz qiymat olish</h3>
+    <p class="card-text">get() metodi kalit mavjud bo'lmasa xato bermaydi, balki None yoki belgilangan qiymatni qaytaradi.</p>
+    <div class="code-block">
+      <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang">python</span><button class="copy-btn" onclick="copyCode(this)">📋 Nusxa</button></div>
+      <div class="code-body"><span class="nb">talaba</span> = {<span class="st">"ism"</span>: <span class="st">"Sardor"</span>, <span class="st">"yosh"</span>: <span class="nu">19</span>}
+
+<span class="cm"># Xavfsiz olish</span>
+<span class="fn">print</span>(<span class="nb">talaba</span>.<span class="fn">get</span>(<span class="st">"ism"</span>))         <span class="cm"># Sardor</span>
+<span class="fn">print</span>(<span class="nb">talaba</span>.<span class="fn">get</span>(<span class="st">"manzil"</span>))      <span class="cm"># None</span>
+<span class="fn">print</span>(<span class="nb">talaba</span>.<span class="fn">get</span>(<span class="st">"manzil"</span>, <span class="st">"Noma'lum"</span>))  <span class="cm"># Noma'lum</span></div>
+    </div>
+    <div class="output-block"><span class="output-label">Natija</span>Sardor
+None
+Noma'lum</div>
+  </div>
+
+  <div class="card">
+    <h3 class="card-title">📋 items(), keys(), values()</h3>
+    <p class="card-text">Bu metodlar dict ning tarkibiy qismlarini ko'rish imkonini beradi.</p>
+    <div class="code-block">
+      <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang">python</span><button class="copy-btn" onclick="copyCode(this)">📋 Nusxa</button></div>
+      <div class="code-body"><span class="nb">meva</span> = {<span class="st">"olma"</span>: <span class="nu">3</span>, <span class="st">"banan"</span>: <span class="nu">5</span>, <span class="st">"anor"</span>: <span class="nu">2</span>}
+
+<span class="fn">print</span>(<span class="nb">meva</span>.<span class="fn">keys</span>())    <span class="cm"># Kalitlar</span>
+<span class="fn">print</span>(<span class="nb">meva</span>.<span class="fn">values</span>())   <span class="cm"># Qiymatlar</span>
+<span class="fn">print</span>(<span class="nb">meva</span>.<span class="fn">items</span>())    <span class="cm"># Juftliklar</span></div>
+    </div>
+    <div class="output-block"><span class="output-label">Natija</span>dict_keys(['olma', 'banan', 'anor'])
+dict_values([3, 5, 2])
+dict_items([('olma', 3), ('banan', 5), ('anor', 2)])</div>
+  </div>
+
+  <div class="card">
+    <h3 class="card-title">🔄 update() — Yangilash</h3>
+    <p class="card-text">update() metodi boshqa dict yoki kalit-qiymat juftliklari bilan mavjud dict ni yangilaydi.</p>
+    <div class="code-block">
+      <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang">python</span><button class="copy-btn" onclick="copyCode(this)">📋 Nusxa</button></div>
+      <div class="code-body"><span class="nb">profil</span> = {<span class="st">"ism"</span>: <span class="st">"Olim"</span>, <span class="st">"yosh"</span>: <span class="nu">22</span>}
+<span class="nb">profil</span>.<span class="fn">update</span>({<span class="st">"shahar"</span>: <span class="st">"Toshkent"</span>, <span class="st">"yosh"</span>: <span class="nu">23</span>})
+<span class="fn">print</span>(<span class="nb">profil</span>)</div>
+    </div>
+    <div class="output-block"><span class="output-label">Natija</span>{'ism': 'Olim', 'yosh': 23, 'shahar': 'Toshkent'}</div>
+  </div>
+
+  <div class="card">
+    <h3 class="card-title">🗑️ pop() va clear()</h3>
+    <p class="card-text">pop() — kalitni o'chirib, qiymatini qaytaradi. clear() — barcha elementlarni o'chiradi.</p>
+    <div class="code-block">
+      <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang">python</span><button class="copy-btn" onclick="copyCode(this)">📋 Nusxa</button></div>
+      <div class="code-body"><span class="nb">rang</span> = {<span class="st">"qizil"</span>: <span class="nu">1</span>, <span class="st">"yashil"</span>: <span class="nu">2</span>, <span class="st">"ko'k"</span>: <span class="nu">3</span>}
+
+<span class="nb">val</span> = <span class="nb">rang</span>.<span class="fn">pop</span>(<span class="st">"yashil"</span>)
+<span class="fn">print</span>(<span class="st">"O'chirilgan:"</span>, <span class="nb">val</span>)
+<span class="fn">print</span>(<span class="st">"Qolgan:"</span>, <span class="nb">rang</span>)
+
+<span class="nb">rang</span>.<span class="fn">clear</span>()
+<span class="fn">print</span>(<span class="st">"Tozalangan:"</span>, <span class="nb">rang</span>)</div>
+    </div>
+    <div class="output-block"><span class="output-label">Natija</span>O'chirilgan: 2
+Qolgan: {'qizil': 1, "ko'k": 3}
+Tozalangan: {}</div>
+  </div>
+
+  <div class="card">
+    <h3 class="card-title">📋 copy() va setdefault()</h3>
+    <p class="card-text">copy() — dict ning nusxasini yaratadi. setdefault() — kalit mavjud bo'lmasa yangi kalit-qiymat qo'shadi.</p>
+    <div class="code-block">
+      <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang">python</span><button class="copy-btn" onclick="copyCode(this)">📋 Nusxa</button></div>
+      <div class="code-body"><span class="cm"># copy()</span>
+<span class="nb">original</span> = {<span class="st">"a"</span>: <span class="nu">1</span>, <span class="st">"b"</span>: <span class="nu">2</span>}
+<span class="nb">nusxa</span> = <span class="nb">original</span>.<span class="fn">copy</span>()
+<span class="nb">nusxa</span>[<span class="st">"c"</span>] = <span class="nu">3</span>
+<span class="fn">print</span>(<span class="st">"Original:"</span>, <span class="nb">original</span>)
+<span class="fn">print</span>(<span class="st">"Nusxa:"</span>, <span class="nb">nusxa</span>)
+
+<span class="cm"># setdefault()</span>
+<span class="nb">d</span> = {<span class="st">"ism"</span>: <span class="st">"Ali"</span>}
+<span class="nb">d</span>.<span class="fn">setdefault</span>(<span class="st">"yosh"</span>, <span class="nu">18</span>)
+<span class="nb">d</span>.<span class="fn">setdefault</span>(<span class="st">"ism"</span>, <span class="st">"Vali"</span>)  <span class="cm"># o'zgarmaydi</span>
+<span class="fn">print</span>(<span class="nb">d</span>)</div>
+    </div>
+    <div class="output-block"><span class="output-label">Natija</span>Original: {'a': 1, 'b': 2}
+Nusxa: {'a': 1, 'b': 2, 'c': 3}
+{'ism': 'Ali', 'yosh': 18}</div>
+  </div>
+
+  <div class="card">
+    <h3 class="card-title">🏗️ Nested Dict (Ichma-ich lug'at)</h3>
+    <p class="card-text">Dict ichida dict saqlash mumkin — bu murakkab ma'lumotlar uchun juda qulay.</p>
+    <div class="code-block">
+      <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang">python</span><button class="copy-btn" onclick="copyCode(this)">📋 Nusxa</button></div>
+      <div class="code-body"><span class="nb">maktab</span> = {
+    <span class="st">"5-sinf"</span>: {
+        <span class="st">"sinf_rahbar"</span>: <span class="st">"Kamola opa"</span>,
+        <span class="st">"talabalar_soni"</span>: <span class="nu">30</span>
+    },
+    <span class="st">"6-sinf"</span>: {
+        <span class="st">"sinf_rahbar"</span>: <span class="st">"Sardor aka"</span>,
+        <span class="st">"talabalar_soni"</span>: <span class="nu">28</span>
+    }
+}
+<span class="fn">print</span>(<span class="nb">maktab</span>[<span class="st">"5-sinf"</span>][<span class="st">"sinf_rahbar"</span>])</div>
+    </div>
+    <div class="output-block"><span class="output-label">Natija</span>Kamola opa</div>
+  </div>
+
+  <div class="card">
+    <h3 class="card-title">⚡ Dict Comprehension</h3>
+    <p class="card-text">Bir qatorda yangi dict yaratish uchun comprehension ishlatiladi.</p>
+    <div class="code-block">
+      <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang">python</span><button class="copy-btn" onclick="copyCode(this)">📋 Nusxa</button></div>
+      <div class="code-body"><span class="cm"># Sonlarning kvadratini dict ga yozish</span>
+<span class="nb">kvadrat</span> = {<span class="nb">x</span>: <span class="nb">x</span>**<span class="nu">2</span> <span class="kw">for</span> <span class="nb">x</span> <span class="kw">in</span> <span class="fn">range</span>(<span class="nu">1</span>, <span class="nu">6</span>)}
+<span class="fn">print</span>(<span class="nb">kvadrat</span>)
+
+<span class="cm"># Shartli comprehension</span>
+<span class="nb">juft</span> = {<span class="nb">x</span>: <span class="nb">x</span>**<span class="nu">2</span> <span class="kw">for</span> <span class="nb">x</span> <span class="kw">in</span> <span class="fn">range</span>(<span class="nu">1</span>, <span class="nu">11</span>) <span class="kw">if</span> <span class="nb">x</span> % <span class="nu">2</span> == <span class="nu">0</span>}
+<span class="fn">print</span>(<span class="nb">juft</span>)</div>
+    </div>
+    <div class="output-block"><span class="output-label">Natija</span>{1: 1, 2: 4, 3: 9, 4: 16, 5: 25}
+{2: 4, 4: 16, 6: 36, 8: 64, 10: 100}</div>
+  </div>
+
+  <div class="card">
+    <h3 class="card-title">🔗 zip() bilan dict yaratish</h3>
+    <p class="card-text">Ikki ro'yxatni birlashtirish uchun zip() juda qulay.</p>
+    <div class="code-block">
+      <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang">python</span><button class="copy-btn" onclick="copyCode(this)">📋 Nusxa</button></div>
+      <div class="code-body"><span class="nb">ismlar</span> = [<span class="st">"Ali"</span>, <span class="st">"Vali"</span>, <span class="st">"Soli"</span>]
+<span class="nb">yoshlar</span> = [<span class="nu">20</span>, <span class="nu">22</span>, <span class="nu">19</span>]
+
+<span class="nb">talabalar</span> = <span class="fn">dict</span>(<span class="fn">zip</span>(<span class="nb">ismlar</span>, <span class="nb">yoshlar</span>))
+<span class="fn">print</span>(<span class="nb">talabalar</span>)</div>
+    </div>
+    <div class="output-block"><span class="output-label">Natija</span>{'Ali': 20, 'Vali': 22, 'Soli': 19}</div>
+  </div>
+
+  <div class="card">
+    <h3 class="card-title">🔄 for bilan aylanish</h3>
+    <div class="code-block">
+      <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang">python</span><button class="copy-btn" onclick="copyCode(this)">📋 Nusxa</button></div>
+      <div class="code-body"><span class="nb">baholar</span> = {<span class="st">"Matematika"</span>: <span class="nu">5</span>, <span class="st">"Fizika"</span>: <span class="nu">4</span>, <span class="st">"Kimyo"</span>: <span class="nu">3</span>}
+
+<span class="cm"># Kalitlar bo'yicha</span>
+<span class="kw">for</span> <span class="nb">fan</span> <span class="kw">in</span> <span class="nb">baholar</span>:
+    <span class="fn">print</span>(<span class="nb">fan</span>, <span class="st">"->"</span>, <span class="nb">baholar</span>[<span class="nb">fan</span>])
+
+<span class="cm"># items() bilan</span>
+<span class="kw">for</span> <span class="nb">fan</span>, <span class="nb">baho</span> <span class="kw">in</span> <span class="nb">baholar</span>.<span class="fn">items</span>():
+    <span class="fn">print</span>(<span class="kw">f</span><span class="st">"{fan}: {baho} ball"</span>)</div>
+    </div>
+    <div class="output-block"><span class="output-label">Natija</span>Matematika -> 5
+Fizika -> 4
+Kimyo -> 3
+Matematika: 5 ball
+Fizika: 4 ball
+Kimyo: 3 ball</div>
+  </div>
+
+  <div class="card">
+    <h3 class="card-title">🔁 while bilan ishlash</h3>
+    <div class="code-block">
+      <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang">python</span><button class="copy-btn" onclick="copyCode(this)">📋 Nusxa</button></div>
+      <div class="code-body"><span class="nb">savat</span> = {<span class="st">"olma"</span>: <span class="nu">3</span>, <span class="st">"nok"</span>: <span class="nu">5</span>, <span class="st">"uzum"</span>: <span class="nu">2</span>}
+
+<span class="kw">while</span> <span class="nb">savat</span>:
+    <span class="nb">element</span> = <span class="nb">savat</span>.<span class="fn">popitem</span>()
+    <span class="fn">print</span>(<span class="kw">f</span><span class="st">"Olib tashlandi: {element}"</span>)
+
+<span class="fn">print</span>(<span class="st">"Savat bo'sh:"</span>, <span class="nb">savat</span>)</div>
+    </div>
+    <div class="output-block"><span class="output-label">Natija</span>Olib tashlandi: ('uzum', 2)
+Olib tashlandi: ('nok', 5)
+Olib tashlandi: ('olma', 3)
+Savat bo'sh: {}</div>
+  </div>
+
+  <div class="card">
+    <h3 class="card-title">🔧 def bilan ishlash</h3>
+    <div class="code-block">
+      <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang">python</span><button class="copy-btn" onclick="copyCode(this)">📋 Nusxa</button></div>
+      <div class="code-body"><span class="kw">def</span> <span class="fn">talaba_info</span>(**<span class="nb">kwargs</span>):
+    <span class="st">"""Kalit so'z argumentlarni dict sifatida qabul qiladi"""</span>
+    <span class="kw">for</span> <span class="nb">kalit</span>, <span class="nb">qiymat</span> <span class="kw">in</span> <span class="nb">kwargs</span>.<span class="fn">items</span>():
+        <span class="fn">print</span>(<span class="kw">f</span><span class="st">"{kalit}: {qiymat}"</span>)
+
+<span class="fn">talaba_info</span>(<span class="nb">ism</span>=<span class="st">"Jasur"</span>, <span class="nb">yosh</span>=<span class="nu">21</span>, <span class="nb">kurs</span>=<span class="nu">3</span>)</div>
+    </div>
+    <div class="output-block"><span class="output-label">Natija</span>ism: Jasur
+yosh: 21
+kurs: 3</div>
+  </div>
+</section>
+
+<!-- 3. SINF ISHI — 50 TA KOD -->
+<section id="sinf-ishi" class="section">
+  <h2 class="section-title"><span class="icon">💻</span> <span class="grad">Sinf ishi — 50 ta kod misoli</span></h2>
+  <p class="section-desc">Oddiydan murakkabga — real hayotga yaqin misollar bilan.</p>
+  <div id="sinf-ishi-content"></div>
+</section>
+
+<!-- 4. UYGA VAZIFA -->
+<section id="uyga-vazifa" class="section">
+  <h2 class="section-title"><span class="icon">📝</span> <span class="grad">Uyga vazifa — 30 ta mashq</span></h2>
+  <p class="section-desc">Mustaqil bajarish uchun topshiriqlar. Osondan qiyinga.</p>
+  <div class="hw-grid" id="hw-grid"></div>
+</section>
+
+<!-- 5. TEST -->
+<section id="test" class="section">
+  <h2 class="section-title"><span class="icon">🧪</span> <span class="grad">Test — 50 ta savol</span></h2>
+  <p class="section-desc">Bilimlaringizni sinab ko'ring!</p>
+  <div id="quiz-container"></div>
+  <div style="text-align:center;margin:24px 0">
+    <button class="tab-btn" style="padding:12px 32px;font-size:1rem;font-weight:700" onclick="checkQuiz()">✅ Natijani tekshirish</button>
+    <button class="tab-btn" style="padding:12px 32px;font-size:1rem" onclick="resetQuiz()">🔄 Qayta boshlash</button>
+  </div>
+  <div class="quiz-result" id="quizResult">
+    <div class="result-score" id="resultScore">0%</div>
+    <p style="margin:8px 0;color:var(--text2)" id="resultText"></p>
+    <div class="progress-bar"><div class="progress-fill" id="resultBar" style="width:0"></div></div>
+  </div>
+</section>
+
+<!-- 6. MINI PROJECTLAR -->
+<section id="projects" class="section">
+  <h2 class="section-title"><span class="icon">🚀</span> <span class="grad">Mini Projectlar</span></h2>
+  <p class="section-desc">Dict asosida to'liq ishlaydigan loyihalar.</p>
+  <div id="projects-content"></div>
+</section>
+
+<!-- 7. FAQ -->
+<section id="faq" class="section">
+  <h2 class="section-title"><span class="icon">❓</span> <span class="grad">Ko'p so'raladigan savollar</span></h2>
+  <p class="section-desc">Dict haqidagi eng ko'p beriladigan savollar va javoblar.</p>
+  <div id="faq-content"></div>
+</section>
+
+</div><!-- /main -->
+
+<!-- FOOTER -->
+<footer id="footer">
+  <div class="footer-logo">🐍 Saddam Teacher</div>
+  <p style="color:var(--text2);font-size:.9rem">Python dasturlash bo'yicha premium o'quv platformasi</p>
+  <div class="footer-links">
+    <a href="#kirish">Kirish</a>
+    <a href="#nazariy">Nazariya</a>
+    <a href="#sinf-ishi">Sinf ishi</a>
+    <a href="#uyga-vazifa">Uyga vazifa</a>
+    <a href="#test">Test</a>
+    <a href="#projects">Projectlar</a>
+  </div>
+  <p style="color:var(--text2);margin-top:12px">📱 Yordam uchun: <a href="https://t.me/saddamtg" target="_blank" style="color:var(--neon);font-weight:600">t.me/saddamtg</a></p>
+  <p class="footer-copy">© 2024–2025 Saddam Teacher. Barcha huquqlar himoyalangan.</p>
+</footer>
+
+<!-- BACK TO TOP -->
+<button id="back-top" onclick="scrollTo({top:0,behavior:'smooth'})" aria-label="Yuqoriga">↑</button>
+
+<!-- TOAST -->
+<div id="toast">✅ Kod nusxalandi!</div>
+
+<script>
+/* ============================================================
+   SADDAM TEACHER — PYTHON DICT O'QUV PLATFORMASI
+   Professional JavaScript
+   ============================================================ */
+
+// ===== LOADER =====
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('loader').classList.add('hidden');
+    setTimeout(() => document.getElementById('loader').remove(), 600);
+  }, 2200);
+});
+
+// ===== THEME TOGGLE =====
+function toggleTheme() {
+  document.body.classList.toggle('light-mode');
+  const btn = document.querySelector('.theme-toggle');
+  btn.textContent = document.body.classList.contains('light-mode') ? '☀️' : '🌙';
+}
+
+// ===== SIDEBAR =====
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebarOverlay').classList.toggle('show');
+}
+
+// ===== SCROLL EFFECTS =====
+window.addEventListener('scroll', () => {
+  const st = window.scrollY;
+  const docH = document.documentElement.scrollHeight - window.innerHeight;
+  document.getElementById('scroll-progress').style.width = (st / docH * 100) + '%';
+  document.getElementById('navbar').classList.toggle('scrolled', st > 50);
+  document.getElementById('back-top').classList.toggle('show', st > 400);
+
+  // Section reveal
+  document.querySelectorAll('.section').forEach(s => {
+    if (s.getBoundingClientRect().top < window.innerHeight * 0.85) s.classList.add('visible');
+  });
+
+  // Active sidebar link
+  const sections = ['hero','kirish','nazariy','sinf-ishi','uyga-vazifa','test','projects','faq'];
+  let current = '';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top <= 150) current = id;
+  });
+  document.querySelectorAll('#sidebar a').forEach(a => {
+    a.classList.toggle('active', a.getAttribute('data-section') === current);
+  });
+});
+
+// ===== COUNTER ANIMATION =====
+const counters = document.querySelectorAll('[data-count]');
+let counted = false;
+function animateCounters() {
+  if (counted) return;
+  const heroStats = document.querySelector('.hero-stats');
+  if (!heroStats || heroStats.getBoundingClientRect().top > window.innerHeight) return;
+  counted = true;
+  counters.forEach(el => {
+    const target = +el.dataset.count;
+    let cur = 0;
+    const step = Math.max(1, Math.floor(target / 40));
+    const timer = setInterval(() => {
+      cur += step;
+      if (cur >= target) { cur = target; clearInterval(timer); }
+      el.textContent = cur;
+    }, 40);
+  });
+}
+window.addEventListener('scroll', animateCounters);
+setTimeout(animateCounters, 2500);
+
+// ===== TYPING ANIMATION =====
+const typingPhrases = [
+  'talaba = {"ism": "Sardor", "yosh": 20}',
+  'print(talaba.get("ism"))',
+  'for key, val in data.items():',
+  'mahsulotlar = dict(zip(nomlar, narxlar))',
+  'nested = {"sinf": {"talaba": "Ali"}}'
+];
+let phraseIdx = 0, charIdx = 0, isDeleting = false;
+function typeEffect() {
+  const el = document.getElementById('typingText');
+  if (!el) return;
+  const current = typingPhrases[phraseIdx];
+  el.innerHTML = '<span style="color:var(--cyan)">' + current.substring(0, charIdx) + '</span><span class="typing-cursor"></span>';
+  if (!isDeleting) {
+    charIdx++;
+    if (charIdx > current.length) { isDeleting = true; setTimeout(typeEffect, 1500); return; }
+  } else {
+    charIdx--;
+    if (charIdx < 0) { isDeleting = false; phraseIdx = (phraseIdx + 1) % typingPhrases.length; setTimeout(typeEffect, 300); return; }
+  }
+  setTimeout(typeEffect, isDeleting ? 30 : 60);
+}
+setTimeout(typeEffect, 2500);
+
+// ===== COPY CODE =====
+function copyCode(btn) {
+  const codeBody = btn.closest('.code-block').querySelector('.code-body');
+  const text = codeBody.textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = '✅ Nusxalandi!';
+    btn.classList.add('copied');
+    showToast('✅ Kod nusxalandi!');
+    setTimeout(() => { btn.textContent = '📋 Nusxa'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ===== SEARCH =====
+const searchableItems = [];
+function buildSearchIndex() {
+  document.querySelectorAll('.card-title, .section-title, .quiz-q, .hw-title, .project-header').forEach(el => {
+    searchableItems.push({ text: el.textContent, el: el });
+  });
+}
+function handleSearch(q) {
+  const box = document.getElementById('searchResults');
+  if (!q.trim()) { box.classList.remove('show'); return; }
+  const results = searchableItems.filter(i => i.text.toLowerCase().includes(q.toLowerCase())).slice(0, 8);
+  if (!results.length) { box.classList.remove('show'); return; }
+  box.innerHTML = results.map(r => `<div class="search-item" onclick="scrollToEl(this)" data-idx="${searchableItems.indexOf(r)}">${r.text.substring(0, 60)}</div>`).join('');
+  box.classList.add('show');
+}
+function scrollToEl(item) {
+  const idx = +item.dataset.idx;
+  searchableItems[idx].el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  document.getElementById('searchResults').classList.remove('show');
+  document.getElementById('searchInput').value = '';
+}
+
+// ===== GENERATE 50 CODE EXAMPLES =====
+function generateSinfIshi() {
+  const examples = [
+    { title: "1. Bo'sh dict yaratish", desc: "Bo'sh lug'at yaratish va unga element qo'shish", code: `<span class="nb">d</span> = {}
+<span class="nb">d</span>[<span class="st">"ism"</span>] = <span class="st">"Ali"</span>
+<span class="nb">d</span>[<span class="st">"yosh"</span>] = <span class="nu">20</span>
+<span class="fn">print</span>(<span class="nb">d</span>)`, output: "{'ism': 'Ali', 'yosh': 20}" },
+    { title: "2. dict() bilan yaratish", desc: "Konstruktor yordamida dict yaratish", code: `<span class="nb">t</span> = <span class="fn">dict</span>(<span class="nb">ism</span>=<span class="st">"Vali"</span>, <span class="nb">yosh</span>=<span class="nu">22</span>, <span class="nb">shahar</span>=<span class="st">"Buxoro"</span>)
+<span class="fn">print</span>(<span class="nb">t</span>)`, output: "{'ism': 'Vali', 'yosh': 22, 'shahar': 'Buxoro'}" },
+    { title: "3. Qiymat olish — []", desc: "Kalit orqali qiymatni olish", code: `<span class="nb">meva</span> = {<span class="st">"olma"</span>: <span class="nu">3</span>, <span class="st">"banan"</span>: <span class="nu">7</span>}
+<span class="fn">print</span>(<span class="nb">meva</span>[<span class="st">"olma"</span>])
+<span class="fn">print</span>(<span class="nb">meva</span>[<span class="st">"banan"</span>])`, output: "3\n7" },
+    { title: "4. get() metodi", desc: "Xavfsiz qiymat olish, xato bermaydi", code: `<span class="nb">d</span> = {<span class="st">"a"</span>: <span class="nu">1</span>}
+<span class="fn">print</span>(<span class="nb">d</span>.<span class="fn">get</span>(<span class="st">"a"</span>))
+<span class="fn">print</span>(<span class="nb">d</span>.<span class="fn">get</span>(<span class="st">"b"</span>, <span class="nu">0</span>))`, output: "1\n0" },
+    { title: "5. Kalit mavjudligini tekshirish", desc: "in operatori bilan tekshirish", code: `<span class="nb">d</span> = {<span class="st">"x"</span>: <span class="nu">10</span>, <span class="st">"y"</span>: <span class="nu">20</span>}
+<span class="fn">print</span>(<span class="st">"x"</span> <span class="kw">in</span> <span class="nb">d</span>)
+<span class="fn">print</span>(<span class="st">"z"</span> <span class="kw">in</span> <span class="nb">d</span>)`, output: "True\nFalse" },
+    { title: "6. Element qo'shish", desc: "Yangi kalit-qiymat juftligi qo'shish", code: `<span class="nb">d</span> = {<span class="st">"rang"</span>: <span class="st">"qizil"</span>}
+<span class="nb">d</span>[<span class="st">"hajm"</span>] = <span class="st">"katta"</span>
+<span class="nb">d</span>[<span class="st">"narx"</span>] = <span class="nu">5000</span>
+<span class="fn">print</span>(<span class="nb">d</span>)`, output: "{'rang': 'qizil', 'hajm': 'katta', 'narx': 5000}" },
+    { title: "7. Element o'chirish — del", desc: "del kalit so'zi bilan o'chirish", code: `<span class="nb">d</span> = {<span class="st">"a"</span>: <span class="nu">1</span>, <span class="st">"b"</span>: <span class="nu">2</span>, <span class="st">"c"</span>: <span class="nu">3</span>}
+<span class="kw">del</span> <span class="nb">d</span>[<span class="st">"b"</span>]
+<span class="fn">print</span>(<span class="nb">d</span>)`, output: "{'a': 1, 'c': 3}" },
+    { title: "8. pop() metodi", desc: "Kalit bo'yicha o'chirib, qiymatini olish", code: `<span class="nb">d</span> = {<span class="st">"ism"</span>: <span class="st">"Ali"</span>, <span class="st">"yosh"</span>: <span class="nu">20</span>}
+<span class="nb">v</span> = <span class="nb">d</span>.<span class="fn">pop</span>(<span class="st">"yosh"</span>)
+<span class="fn">print</span>(<span class="nb">v</span>, <span class="nb">d</span>)`, output: "20 {'ism': 'Ali'}" },
+    { title: "9. update() bilan yangilash", desc: "Dict ni boshqa dict bilan yangilash", code: `<span class="nb">d</span> = {<span class="st">"a"</span>: <span class="nu">1</span>}
+<span class="nb">d</span>.<span class="fn">update</span>({<span class="st">"b"</span>: <span class="nu">2</span>, <span class="st">"c"</span>: <span class="nu">3</span>})
+<span class="fn">print</span>(<span class="nb">d</span>)`, output: "{'a': 1, 'b': 2, 'c': 3}" },
+    { title: "10. keys() metodi", desc: "Barcha kalitlarni olish", code: `<span class="nb">d</span> = {<span class="st">"olma"</span>: <span class="nu">2</span>, <span class="st">"nok"</span>: <span class="nu">5</span>, <span class="st">"uzum"</span>: <span class="nu">3</span>}
+<span class="kw">for</span> <span class="nb">k</span> <span class="kw">in</span> <span class="nb">d</span>.<span class="fn">keys</span>():
+    <span class="fn">print</span>(<span class="nb">k</span>)`, output: "olma\nnok\nuzum" },
+    { title: "11. values() metodi", desc: "Barcha qiymatlarni olish", code: `<span class="nb">baholar</span> = {<span class="st">"Ali"</span>: <span class="nu">5</span>, <span class="st">"Vali"</span>: <span class="nu">4</span>, <span class="st">"Soli"</span>: <span class="nu">3</span>}
+<span class="fn">print</span>(<span class="fn">list</span>(<span class="nb">baholar</span>.<span class="fn">values</span>()))
+<span class="fn">print</span>(<span class="fn">sum</span>(<span class="nb">baholar</span>.<span class="fn">values</span>()))`, output: "[5, 4, 3]\n12" },
+    { title: "12. items() bilan aylanish", desc: "Kalit-qiymat juftliklarini ko'rish", code: `<span class="nb">d</span> = {<span class="st">"Python"</span>: <span class="nu">95</span>, <span class="st">"Java"</span>: <span class="nu">80</span>}
+<span class="kw">for</span> <span class="nb">til</span>, <span class="nb">ball</span> <span class="kw">in</span> <span class="nb">d</span>.<span class="fn">items</span>():
+    <span class="fn">print</span>(<span class="kw">f</span><span class="st">"{til}: {ball} ball"</span>)`, output: "Python: 95 ball\nJava: 80 ball" },
+    { title: "13. len() — uzunlik", desc: "Dict dagi elementlar soni", code: `<span class="nb">d</span> = {<span class="st">"a"</span>: <span class="nu">1</span>, <span class="st">"b"</span>: <span class="nu">2</span>, <span class="st">"c"</span>: <span class="nu">3</span>}
+<span class="fn">print</span>(<span class="fn">len</span>(<span class="nb">d</span>))`, output: "3" },
+    { title: "14. clear() — tozalash", desc: "Barcha elementlarni o'chirish", code: `<span class="nb">d</span> = {<span class="st">"x"</span>: <span class="nu">1</span>, <span class="st">"y"</span>: <span class="nu">2</span>}
+<span class="nb">d</span>.<span class="fn">clear</span>()
+<span class="fn">print</span>(<span class="nb">d</span>)`, output: "{}" },
+    { title: "15. copy() — nusxa olish", desc: "Dict ning mustaqil nusxasini yaratish", code: `<span class="nb">a</span> = {<span class="st">"k"</span>: <span class="nu">1</span>}
+<span class="nb">b</span> = <span class="nb">a</span>.<span class="fn">copy</span>()
+<span class="nb">b</span>[<span class="st">"k"</span>] = <span class="nu">99</span>
+<span class="fn">print</span>(<span class="st">"a:"</span>, <span class="nb">a</span>, <span class="st">"b:"</span>, <span class="nb">b</span>)`, output: "a: {'k': 1} b: {'k': 99}" },
+    { title: "16. setdefault()", desc: "Kalit bo'lmasa qo'shish", code: `<span class="nb">d</span> = {<span class="st">"ism"</span>: <span class="st">"Ali"</span>}
+<span class="nb">d</span>.<span class="fn">setdefault</span>(<span class="st">"yosh"</span>, <span class="nu">18</span>)
+<span class="nb">d</span>.<span class="fn">setdefault</span>(<span class="st">"ism"</span>, <span class="st">"Vali"</span>)
+<span class="fn">print</span>(<span class="nb">d</span>)`, output: "{'ism': 'Ali', 'yosh': 18}" },
+    { title: "17. Nested dict", desc: "Ichma-ich lug'atlar", code: `<span class="nb">db</span> = {
+    <span class="st">"user1"</span>: {<span class="st">"ism"</span>: <span class="st">"Ali"</span>, <span class="st">"baho"</span>: <span class="nu">5</span>},
+    <span class="st">"user2"</span>: {<span class="st">"ism"</span>: <span class="st">"Vali"</span>, <span class="st">"baho"</span>: <span class="nu">4</span>}
+}
+<span class="fn">print</span>(<span class="nb">db</span>[<span class="st">"user1"</span>][<span class="st">"ism"</span>])`, output: "Ali" },
+    { title: "18. Dict comprehension", desc: "Bir qatorda dict yaratish", code: `<span class="nb">kv</span> = {<span class="nb">i</span>: <span class="nb">i</span>**<span class="nu">2</span> <span class="kw">for</span> <span class="nb">i</span> <span class="kw">in</span> <span class="fn">range</span>(<span class="nu">1</span>,<span class="nu">6</span>)}
+<span class="fn">print</span>(<span class="nb">kv</span>)`, output: "{1: 1, 2: 4, 3: 9, 4: 16, 5: 25}" },
+    { title: "19. zip() bilan dict", desc: "Ikki ro'yxatdan dict yaratish", code: `<span class="nb">k</span> = [<span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>]
+<span class="nb">v</span> = [<span class="nu">1</span>, <span class="nu">2</span>, <span class="nu">3</span>]
+<span class="nb">d</span> = <span class="fn">dict</span>(<span class="fn">zip</span>(<span class="nb">k</span>, <span class="nb">v</span>))
+<span class="fn">print</span>(<span class="nb">d</span>)`, output: "{'a': 1, 'b': 2, 'c': 3}" },
+    { title: "20. fromkeys()", desc: "Bir xil qiymatli dict yaratish", code: `<span class="nb">keys</span> = [<span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>]
+<span class="nb">d</span> = <span class="fn">dict</span>.<span class="fn">fromkeys</span>(<span class="nb">keys</span>, <span class="nu">0</span>)
+<span class="fn">print</span>(<span class="nb">d</span>)`, output: "{'a': 0, 'b': 0, 'c': 0}" },
+    { title: "21. Telefon daftar", desc: "Oddiy telefon daftarchasi", code: `<span class="nb">daftar</span> = {}
+<span class="nb">daftar</span>[<span class="st">"Ali"</span>] = <span class="st">"+998901234567"</span>
+<span class="nb">daftar</span>[<span class="st">"Vali"</span>] = <span class="st">"+998907654321"</span>
+<span class="kw">for</span> <span class="nb">ism</span>, <span class="nb">tel</span> <span class="kw">in</span> <span class="nb">daftar</span>.<span class="fn">items</span>():
+    <span class="fn">print</span>(<span class="kw">f</span><span class="st">"📱 {ism}: {tel}"</span>)`, output: "📱 Ali: +998901234567\n📱 Vali: +998907654321" },
+    { title: "22. Login tizimi", desc: "Oddiy login tekshirish", code: `<span class="nb">users</span> = {<span class="st">"admin"</span>: <span class="st">"1234"</span>, <span class="st">"user"</span>: <span class="st">"pass"</span>}
+<span class="nb">login</span> = <span class="st">"admin"</span>
+<span class="nb">parol</span> = <span class="st">"1234"</span>
+<span class="kw">if</span> <span class="nb">users</span>.<span class="fn">get</span>(<span class="nb">login</span>) == <span class="nb">parol</span>:
+    <span class="fn">print</span>(<span class="st">"✅ Kirish muvaffaqiyatli!"</span>)
+<span class="kw">else</span>:
+    <span class="fn">print</span>(<span class="st">"❌ Xato!"</span>)`, output: "✅ Kirish muvaffaqiyatli!" },
+    { title: "23. Mahsulot narxlari", desc: "Narxlarni hisoblash", code: `<span class="nb">narxlar</span> = {<span class="st">"non"</span>: <span class="nu">5000</span>, <span class="st">"sut"</span>: <span class="nu">12000</span>, <span class="st">"go'sht"</span>: <span class="nu">80000</span>}
+<span class="nb">jami</span> = <span class="fn">sum</span>(<span class="nb">narxlar</span>.<span class="fn">values</span>())
+<span class="fn">print</span>(<span class="kw">f</span><span class="st">"Jami: {jami:,} so'm"</span>)`, output: "Jami: 97,000 so'm" },
+    { title: "24. Talaba baholari", desc: "O'rtacha baho hisoblash", code: `<span class="nb">baholar</span> = {<span class="st">"Matematika"</span>: <span class="nu">5</span>, <span class="st">"Fizika"</span>: <span class="nu">4</span>, <span class="st">"Kimyo"</span>: <span class="nu">3</span>, <span class="st">"Biologiya"</span>: <span class="nu">5</span>}
+<span class="nb">ort</span> = <span class="fn">sum</span>(<span class="nb">baholar</span>.<span class="fn">values</span>()) / <span class="fn">len</span>(<span class="nb">baholar</span>)
+<span class="fn">print</span>(<span class="kw">f</span><span class="st">"O'rtacha baho: {ort:.1f}"</span>)`, output: "O'rtacha baho: 4.2" },
+    { title: "25. Eng katta qiymat", desc: "max() bilan ishlash", code: `<span class="nb">baholar</span> = {<span class="st">"Ali"</span>: <span class="nu">85</span>, <span class="st">"Vali"</span>: <span class="nu">92</span>, <span class="st">"Soli"</span>: <span class="nu">78</span>}
+<span class="nb">eng_yaxshi</span> = <span class="fn">max</span>(<span class="nb">baholar</span>, <span class="nb">key</span>=<span class="nb">baholar</span>.<span class="fn">get</span>)
+<span class="fn">print</span>(<span class="kw">f</span><span class="st">"Eng yaxshi: {eng_yaxshi} — {baholar[eng_yaxshi]} ball"</span>)`, output: "Eng yaxshi: Vali — 92 ball" },
+    { title: "26. So'z chastotasi", desc: "Matndagi so'zlar sonini hisoblash", code: `<span class="nb">matn</span> = <span class="st">"olma banan olma uzum banan olma"</span>
+<span class="nb">soz</span> = <span class="nb">matn</span>.<span class="fn">split</span>()
+<span class="nb">chastota</span> = {}
+<span class="kw">for</span> <span class="nb">s</span> <span class="kw">in</span> <span class="nb">soz</span>:
+    <span class="nb">chastota</span>[<span class="nb">s</span>] = <span class="nb">chastota</span>.<span class="fn">get</span>(<span class="nb">s</span>, <span class="nu">0</span>) + <span class="nu">1</span>
+<span class="fn">print</span>(<span class="nb">chastota</span>)`, output: "{'olma': 3, 'banan': 2, 'uzum': 1}" },
+    { title: "27. Dict saralash (key bo'yicha)", desc: "Kalitlar bo'yicha saralash", code: `<span class="nb">d</span> = {<span class="st">"banan"</span>: <span class="nu">3</span>, <span class="st">"olma"</span>: <span class="nu">1</span>, <span class="st">"anor"</span>: <span class="nu">5</span>}
+<span class="nb">saralangan</span> = <span class="fn">dict</span>(<span class="fn">sorted</span>(<span class="nb">d</span>.<span class="fn">items</span>()))
+<span class="fn">print</span>(<span class="nb">saralangan</span>)`, output: "{'anor': 5, 'banan': 3, 'olma': 1}" },
+    { title: "28. Dict saralash (value bo'yicha)", desc: "Qiymatlar bo'yicha saralash", code: `<span class="nb">d</span> = {<span class="st">"Ali"</span>: <span class="nu">80</span>, <span class="st">"Vali"</span>: <span class="nu">95</span>, <span class="st">"Soli"</span>: <span class="nu">70</span>}
+<span class="nb">sar</span> = <span class="fn">dict</span>(<span class="fn">sorted</span>(<span class="nb">d</span>.<span class="fn">items</span>(), <span class="nb">key</span>=<span class="kw">lambda</span> <span class="nb">x</span>: <span class="nb">x</span>[<span class="nu">1</span>], <span class="nb">reverse</span>=<span class="kw">True</span>))
+<span class="fn">print</span>(<span class="nb">sar</span>)`, output: "{'Vali': 95, 'Ali': 80, 'Soli': 70}" },
+    { title: "29. Ikki dict birlashtirish", desc: "** operatori bilan birlashtirish", code: `<span class="nb">a</span> = {<span class="st">"x"</span>: <span class="nu">1</span>}
+<span class="nb">b</span> = {<span class="st">"y"</span>: <span class="nu">2</span>}
+<span class="nb">c</span> = {**<span class="nb">a</span>, **<span class="nb">b</span>}
+<span class="fn">print</span>(<span class="nb">c</span>)`, output: "{'x': 1, 'y': 2}" },
+    { title: "30. | operatori (Python 3.9+)", desc: "Yangi birlashtirish sintaksisi", code: `<span class="nb">a</span> = {<span class="st">"x"</span>: <span class="nu">1</span>}
+<span class="nb">b</span> = {<span class="st">"y"</span>: <span class="nu">2</span>}
+<span class="nb">c</span> = <span class="nb">a</span> | <span class="nb">b</span>
+<span class="fn">print</span>(<span class="nb">c</span>)`, output: "{'x': 1, 'y': 2}" },
+    { title: "31. Dict ichida list", desc: "Qiymat sifatida ro'yxat", code: `<span class="nb">sinf</span> = {
+    <span class="st">"5-A"</span>: [<span class="st">"Ali"</span>, <span class="st">"Vali"</span>],
+    <span class="st">"5-B"</span>: [<span class="st">"Soli"</span>, <span class="st">"Toli"</span>]
+}
+<span class="nb">sinf</span>[<span class="st">"5-A"</span>].<span class="fn">append</span>(<span class="st">"Jasur"</span>)
+<span class="fn">print</span>(<span class="nb">sinf</span>)`, output: "{'5-A': ['Ali', 'Vali', 'Jasur'], '5-B': ['Soli', 'Toli']}" },
+    { title: "32. popitem() — oxirgi element", desc: "Oxirgi qo'shilgan elementni olish", code: `<span class="nb">d</span> = {<span class="st">"a"</span>: <span class="nu">1</span>, <span class="st">"b"</span>: <span class="nu">2</span>, <span class="st">"c"</span>: <span class="nu">3</span>}
+<span class="nb">last</span> = <span class="nb">d</span>.<span class="fn">popitem</span>()
+<span class="fn">print</span>(<span class="st">"Oxirgi:"</span>, <span class="nb">last</span>)
+<span class="fn">print</span>(<span class="st">"Qolgan:"</span>, <span class="nb">d</span>)`, output: "Oxirgi: ('c', 3)\nQolgan: {'a': 1, 'b': 2}" },
+    { title: "33. Shartli filtr", desc: "Comprehension bilan filtrlash", code: `<span class="nb">baholar</span> = {<span class="st">"Ali"</span>: <span class="nu">5</span>, <span class="st">"Vali"</span>: <span class="nu">3</span>, <span class="st">"Soli"</span>: <span class="nu">4</span>, <span class="st">"Toli"</span>: <span class="nu">2</span>}
+<span class="nb">yaxshi</span> = {<span class="nb">k</span>: <span class="nb">v</span> <span class="kw">for</span> <span class="nb">k</span>, <span class="nb">v</span> <span class="kw">in</span> <span class="nb">baholar</span>.<span class="fn">items</span>() <span class="kw">if</span> <span class="nb">v</span> >= <span class="nu">4</span>}
+<span class="fn">print</span>(<span class="nb">yaxshi</span>)`, output: "{'Ali': 5, 'Soli': 4}" },
+    { title: "34. Dict inversiya", desc: "Kalit va qiymatni almashtirish", code: `<span class="nb">d</span> = {<span class="st">"a"</span>: <span class="nu">1</span>, <span class="st">"b"</span>: <span class="nu">2</span>, <span class="st">"c"</span>: <span class="nu">3</span>}
+<span class="nb">inv</span> = {<span class="nb">v</span>: <span class="nb">k</span> <span class="kw">for</span> <span class="nb">k</span>, <span class="nb">v</span> <span class="kw">in</span> <span class="nb">d</span>.<span class="fn">items</span>()}
+<span class="fn">print</span>(<span class="nb">inv</span>)`, output: "{1: 'a', 2: 'b', 3: 'c'}" },
+    { title: "35. enumerate bilan dict", desc: "Indeksli dict yaratish", code: `<span class="nb">mevalar</span> = [<span class="st">"olma"</span>, <span class="st">"banan"</span>, <span class="st">"uzum"</span>]
+<span class="nb">d</span> = {<span class="nb">i</span>: <span class="nb">m</span> <span class="kw">for</span> <span class="nb">i</span>, <span class="nb">m</span> <span class="kw">in</span> <span class="fn">enumerate</span>(<span class="nb">mevalar</span>, <span class="nu">1</span>)}
+<span class="fn">print</span>(<span class="nb">d</span>)`, output: "{1: 'olma', 2: 'banan', 3: 'uzum'}" },
+    { title: "36. Student system", desc: "Talabalar ma'lumotlar bazasi", code: `<span class="nb">students</span> = {
+    <span class="nu">101</span>: {<span class="st">"ism"</span>: <span class="st">"Sardor"</span>, <span class="st">"fan"</span>: <span class="st">"Python"</span>, <span class="st">"baho"</span>: <span class="nu">90</span>},
+    <span class="nu">102</span>: {<span class="st">"ism"</span>: <span class="st">"Jasur"</span>, <span class="st">"fan"</span>: <span class="st">"Java"</span>, <span class="st">"baho"</span>: <span class="nu">85</span>}
+}
+<span class="kw">for</span> <span class="nb">sid</span>, <span class="nb">info</span> <span class="kw">in</span> <span class="nb">students</span>.<span class="fn">items</span>():
+    <span class="fn">print</span>(<span class="kw">f</span><span class="st">"ID: {sid} | {info['ism']} | {info['baho']} ball"</span>)`, output: "ID: 101 | Sardor | 90 ball\nID: 102 | Jasur | 85 ball" },
+    { title: "37. Mahsulotlar do'koni", desc: "Inventar boshqarish", code: `<span class="nb">dokon</span> = {
+    <span class="st">"telefon"</span>: {<span class="st">"narx"</span>: <span class="nu">3000000</span>, <span class="st">"soni"</span>: <span class="nu">10</span>},
+    <span class="st">"noutbuk"</span>: {<span class="st">"narx"</span>: <span class="nu">8000000</span>, <span class="st">"soni"</span>: <span class="nu">5</span>}
+}
+<span class="nb">jami</span> = <span class="fn">sum</span>(<span class="nb">v</span>[<span class="st">"narx"</span>] * <span class="nb">v</span>[<span class="st">"soni"</span>] <span class="kw">for</span> <span class="nb">v</span> <span class="kw">in</span> <span class="nb">dokon</span>.<span class="fn">values</span>())
+<span class="fn">print</span>(<span class="kw">f</span><span class="st">"Jami: {jami:,} so'm"</span>)`, output: "Jami: 70,000,000 so'm" },
+    { title: "38. JSON style config", desc: "Konfiguratsiya fayli", code: `<span class="nb">config</span> = {
+    <span class="st">"app"</span>: <span class="st">"MyBot"</span>,
+    <span class="st">"version"</span>: <span class="st">"2.0"</span>,
+    <span class="st">"debug"</span>: <span class="kw">False</span>,
+    <span class="st">"database"</span>: {
+        <span class="st">"host"</span>: <span class="st">"localhost"</span>,
+        <span class="st">"port"</span>: <span class="nu">5432</span>
+    }
+}
+<span class="fn">print</span>(<span class="nb">config</span>[<span class="st">"database"</span>][<span class="st">"host"</span>])`, output: "localhost" },
+    { title: "39. Telegram bot logic", desc: "Buyruqlar tizimi", code: `<span class="nb">commands</span> = {
+    <span class="st">"/start"</span>: <span class="st">"Botga xush kelibsiz! 🤖"</span>,
+    <span class="st">"/help"</span>: <span class="st">"Yordam: /start /info /about"</span>,
+    <span class="st">"/info"</span>: <span class="st">"Bu Python o'rgatuvchi bot"</span>
+}
+<span class="nb">msg</span> = <span class="st">"/start"</span>
+<span class="fn">print</span>(<span class="nb">commands</span>.<span class="fn">get</span>(<span class="nb">msg</span>, <span class="st">"Noma'lum buyruq ❌"</span>))`, output: "Botga xush kelibsiz! 🤖" },
+    { title: "40. Statistik hisoblash", desc: "Ma'lumotlar tahlili", code: `<span class="nb">ballar</span> = {<span class="st">"Ali"</span>: <span class="nu">78</span>, <span class="st">"Vali"</span>: <span class="nu">92</span>, <span class="st">"Soli"</span>: <span class="nu">65</span>, <span class="st">"Toli"</span>: <span class="nu">88</span>}
+<span class="nb">ort</span> = <span class="fn">sum</span>(<span class="nb">ballar</span>.<span class="fn">values</span>()) / <span class="fn">len</span>(<span class="nb">ballar</span>)
+<span class="nb">eng_max</span> = <span class="fn">max</span>(<span class="nb">ballar</span>, <span class="nb">key</span>=<span class="nb">ballar</span>.<span class="fn">get</span>)
+<span class="nb">eng_min</span> = <span class="fn">min</span>(<span class="nb">ballar</span>, <span class="nb">key</span>=<span class="nb">ballar</span>.<span class="fn">get</span>)
+<span class="fn">print</span>(<span class="kw">f</span><span class="st">"O'rtacha: {ort:.1f}"</span>)
+<span class="fn">print</span>(<span class="kw">f</span><span class="st">"Max: {eng_max}({ballar[eng_max]})"</span>)
+<span class="fn">print</span>(<span class="kw">f</span><span class="st">"Min: {eng_min}({ballar[eng_min]})"</span>)`, output: "O'rtacha: 80.8\nMax: Vali(92)\nMin: Soli(65)" },
+    { title: "41. API response misoli", desc: "API javobini qayta ishlash", code: `<span class="nb">response</span> = {
+    <span class="st">"status"</span>: <span class="nu">200</span>,
+    <span class="st">"data"</span>: {
+        <span class="st">"users"</span>: [
+            {<span class="st">"id"</span>: <span class="nu">1</span>, <span class="st">"name"</span>: <span class="st">"Ali"</span>},
+            {<span class="st">"id"</span>: <span class="nu">2</span>, <span class="st">"name"</span>: <span class="st">"Vali"</span>}
+        ]
+    }
+}
+<span class="kw">if</span> <span class="nb">response</span>[<span class="st">"status"</span>] == <span class="nu">200</span>:
+    <span class="kw">for</span> <span class="nb">u</span> <span class="kw">in</span> <span class="nb">response</span>[<span class="st">"data"</span>][<span class="st">"users"</span>]:
+        <span class="fn">print</span>(<span class="kw">f</span><span class="st">"👤 {u['name']}"</span>)`, output: "👤 Ali\n👤 Vali" },
+    { title: "42. Harflar chastotasi", desc: "Matndagi har bir harf sonini hisoblash", code: `<span class="nb">matn</span> = <span class="st">"python"</span>
+<span class="nb">chastota</span> = {<span class="nb">h</span>: <span class="nb">matn</span>.<span class="fn">count</span>(<span class="nb">h</span>) <span class="kw">for</span> <span class="nb">h</span> <span class="kw">in</span> <span class="fn">set</span>(<span class="nb">matn</span>)}
+<span class="fn">print</span>(<span class="nb">chastota</span>)`, output: "{'p': 1, 'y': 1, 't': 1, 'h': 1, 'o': 1, 'n': 1}" },
+    { title: "43. Valyuta konvertor", desc: "Valyuta kurslarini saqlash", code: `<span class="nb">kurs</span> = {<span class="st">"USD"</span>: <span class="nu">12500</span>, <span class="st">"EUR"</span>: <span class="nu">13800</span>, <span class="st">"RUB"</span>: <span class="nu">135</span>}
+<span class="nb">miqdor</span> = <span class="nu">100</span>
+<span class="nb">valyuta</span> = <span class="st">"USD"</span>
+<span class="nb">natija</span> = <span class="nb">miqdor</span> * <span class="nb">kurs</span>[<span class="nb">valyuta</span>]
+<span class="fn">print</span>(<span class="kw">f</span><span class="st">"{miqdor} {valyuta} = {natija:,} so'm"</span>)`, output: "100 USD = 1,250,000 so'm" },
+    { title: "44. Kunlar dict", desc: "Hafta kunlari ro'yxati", code: `<span class="nb">kunlar</span> = {<span class="nb">i</span>: <span class="nb">k</span> <span class="kw">for</span> <span class="nb">i</span>, <span class="nb">k</span> <span class="kw">in</span> <span class="fn">enumerate</span>(
+    [<span class="st">"Dush"</span>, <span class="st">"Sesh"</span>, <span class="st">"Chor"</span>, <span class="st">"Pay"</span>, <span class="st">"Juma"</span>, <span class="st">"Shan"</span>, <span class="st">"Yak"</span>], <span class="nu">1</span>
+)}
+<span class="fn">print</span>(<span class="nb">kunlar</span>)`, output: "{1: 'Dush', 2: 'Sesh', 3: 'Chor', 4: 'Pay', 5: 'Juma', 6: 'Shan', 7: 'Yak'}" },
+    { title: "45. Ichma-ich loop", desc: "Nested dict bo'yicha aylanish", code: `<span class="nb">fakultet</span> = {
+    <span class="st">"IT"</span>: {<span class="st">"talabalar"</span>: <span class="nu">200</span>, <span class="st">"proflar"</span>: <span class="nu">15</span>},
+    <span class="st">"Iqtisod"</span>: {<span class="st">"talabalar"</span>: <span class="nu">300</span>, <span class="st">"proflar"</span>: <span class="nu">20</span>}
+}
+<span class="kw">for</span> <span class="nb">nom</span>, <span class="nb">info</span> <span class="kw">in</span> <span class="nb">fakultet</span>.<span class="fn">items</span>():
+    <span class="fn">print</span>(<span class="kw">f</span><span class="st">"📚 {nom}: {info['talabalar']} talaba"</span>)`, output: "📚 IT: 200 talaba\n📚 Iqtisod: 300 talaba" },
+    { title: "46. Counter — sanash", desc: "Elementlar sonini hisoblash", code: `<span class="nb">ovqatlar</span> = [<span class="st">"osh"</span>, <span class="st">"lag'mon"</span>, <span class="st">"osh"</span>, <span class="st">"somsa"</span>, <span class="st">"osh"</span>, <span class="st">"lag'mon"</span>]
+<span class="nb">hisoblagich</span> = {}
+<span class="kw">for</span> <span class="nb">o</span> <span class="kw">in</span> <span class="nb">ovqatlar</span>:
+    <span class="nb">hisoblagich</span>[<span class="nb">o</span>] = <span class="nb">hisoblagich</span>.<span class="fn">get</span>(<span class="nb">o</span>, <span class="nu">0</span>) + <span class="nu">1</span>
+<span class="fn">print</span>(<span class="nb">hisoblagich</span>)`, output: "{'osh': 3, \"lag'mon\": 2, 'somsa': 1}" },
+    { title: "47. Dict to list of tuples", desc: "Dict ni tuple ro'yxatiga aylantirish", code: `<span class="nb">d</span> = {<span class="st">"a"</span>: <span class="nu">1</span>, <span class="st">"b"</span>: <span class="nu">2</span>, <span class="st">"c"</span>: <span class="nu">3</span>}
+<span class="nb">tuples</span> = <span class="fn">list</span>(<span class="nb">d</span>.<span class="fn">items</span>())
+<span class="fn">print</span>(<span class="nb">tuples</span>)`, output: "[('a', 1), ('b', 2), ('c', 3)]" },
+    { title: "48. Funksiya bilan dict", desc: "Dict qaytaruvchi funksiya", code: `<span class="kw">def</span> <span class="fn">profil_yarat</span>(<span class="nb">ism</span>, <span class="nb">yosh</span>, <span class="nb">kasb</span>):
+    <span class="kw">return</span> {
+        <span class="st">"ism"</span>: <span class="nb">ism</span>,
+        <span class="st">"yosh"</span>: <span class="nb">yosh</span>,
+        <span class="st">"kasb"</span>: <span class="nb">kasb</span>,
+        <span class="st">"status"</span>: <span class="st">"faol"</span>
+    }
+<span class="nb">p</span> = <span class="fn">profil_yarat</span>(<span class="st">"Sardor"</span>, <span class="nu">25</span>, <span class="st">"Dasturchi"</span>)
+<span class="fn">print</span>(<span class="nb">p</span>)`, output: "{'ism': 'Sardor', 'yosh': 25, 'kasb': 'Dasturchi', 'status': 'faol'}" },
+    { title: "49. Deep copy", desc: "Chuqur nusxa olish", code: `<span class="kw">import</span> copy
+<span class="nb">original</span> = {<span class="st">"a"</span>: [<span class="nu">1</span>, <span class="nu">2</span>], <span class="st">"b"</span>: [<span class="nu">3</span>]}
+<span class="nb">nusxa</span> = copy.<span class="fn">deepcopy</span>(<span class="nb">original</span>)
+<span class="nb">nusxa</span>[<span class="st">"a"</span>].<span class="fn">append</span>(<span class="nu">99</span>)
+<span class="fn">print</span>(<span class="st">"Original:"</span>, <span class="nb">original</span>)
+<span class="fn">print</span>(<span class="st">"Nusxa:"</span>, <span class="nb">nusxa</span>)`, output: "Original: {'a': [1, 2], 'b': [3]}\nNusxa: {'a': [1, 2, 99], 'b': [3]}" },
+    { title: "50. Mini database", desc: "To'liq CRUD tizimi", code: `<span class="nb">db</span> = {}
+<span class="cm"># Create</span>
+<span class="nb">db</span>[<span class="nu">1</span>] = {<span class="st">"ism"</span>: <span class="st">"Ali"</span>, <span class="st">"baho"</span>: <span class="nu">5</span>}
+<span class="nb">db</span>[<span class="nu">2</span>] = {<span class="st">"ism"</span>: <span class="st">"Vali"</span>, <span class="st">"baho"</span>: <span class="nu">4</span>}
+<span class="cm"># Read</span>
+<span class="fn">print</span>(<span class="st">"Read:"</span>, <span class="nb">db</span>[<span class="nu">1</span>])
+<span class="cm"># Update</span>
+<span class="nb">db</span>[<span class="nu">1</span>][<span class="st">"baho"</span>] = <span class="nu">3</span>
+<span class="fn">print</span>(<span class="st">"Updated:"</span>, <span class="nb">db</span>[<span class="nu">1</span>])
+<span class="cm"># Delete</span>
+<span class="kw">del</span> <span class="nb">db</span>[<span class="nu">2</span>]
+<span class="fn">print</span>(<span class="st">"All:"</span>, <span class="nb">db</span>)`, output: "Read: {'ism': 'Ali', 'baho': 5}\nUpdated: {'ism': 'Ali', 'baho': 3}\nAll: {1: {'ism': 'Ali', 'baho': 3}}" }
+  ];
+
+  const container = document.getElementById('sinf-ishi-content');
+  container.innerHTML = examples.map(ex => `
+    <div class="card">
+      <h3 class="card-title">💻 ${ex.title}</h3>
+      <p class="card-text">${ex.desc}</p>
+      <div class="code-block">
+        <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang">python</span><button class="copy-btn" onclick="copyCode(this)">📋 Nusxa</button></div>
+        <div class="code-body">${ex.code}</div>
+      </div>
+      <div class="output-block"><span class="output-label">Natija</span>${ex.output}</div>
+    </div>
+  `).join('');
+}
+
+// ===== GENERATE 30 HOMEWORK =====
+function generateHomework() {
+  const tasks = [
+    { q: "Bo'sh dict yarating va unga 3 ta element qo'shing", d: "easy" },
+    { q: "Dict yaratib, barcha kalitlarni ekranga chiqaring", d: "easy" },
+    { q: "Dict yaratib, barcha qiymatlarni ekranga chiqaring", d: "easy" },
+    { q: "get() metodi yordamida mavjud bo'lmagan kalitni tekshiring", d: "easy" },
+    { q: "Dict dan bitta elementni pop() bilan o'chiring", d: "easy" },
+    { q: "Ikki dict ni update() bilan birlashtiring", d: "easy" },
+    { q: "Dict ning nusxasini copy() bilan yarating", d: "easy" },
+    { q: "len() yordamida dict elementlari sonini toping", d: "easy" },
+    { q: "in operatori bilan kalit mavjudligini tekshiring", d: "easy" },
+    { q: "Dict yaratib, clear() bilan tozalang", d: "easy" },
+    { q: "Dict comprehension bilan 1-10 sonlarning kubini hisoblang", d: "medium" },
+    { q: "zip() yordamida ikkita ro'yxatdan dict yarating", d: "medium" },
+    { q: "for loop bilan dict elementlarini chiroyli formatda chiqaring", d: "medium" },
+    { q: "Dict dagi eng katta qiymatli elementni toping", d: "medium" },
+    { q: "Dict dagi eng kichik qiymatli elementni toping", d: "medium" },
+    { q: "Dict qiymatlarining yig'indisini hisoblang", d: "medium" },
+    { q: "Nested dict yaratib, ichki qiymatga murojaat qiling", d: "medium" },
+    { q: "Dict ni qiymat bo'yicha kamayish tartibida saralang", d: "medium" },
+    { q: "Matndan so'zlar chastotasini dict bilan hisoblang", d: "medium" },
+    { q: "setdefault() bilan dict ga xavfsiz element qo'shing", d: "medium" },
+    { q: "Telefon daftarchasi dasturi yozing (qo'shish, o'chirish, qidirish)", d: "hard" },
+    { q: "Login tizimi yarating (foydalanuvchi va parol dict da)", d: "hard" },
+    { q: "Talabalar baholarini dict da saqlang va o'rtacha hisoblang", d: "hard" },
+    { q: "Valyuta konvertor dasturi yozing (dict bilan)", d: "hard" },
+    { q: "Inventar boshqarish tizimi yarating (qo'shish, sotish, qoldiq)", d: "hard" },
+    { q: "API response dict dan ma'lumotlarni ajratib oling", d: "hard" },
+    { q: "Dict yordamida oddiy cache tizimi yarating", d: "hard" },
+    { q: "Funksiya yozing: dict qabul qilib, filtrlangan dict qaytarsin", d: "hard" },
+    { q: "Ikki dict ni taqqoslab, farqlarini toping", d: "hard" },
+    { q: "Mini database yarating: CRUD operatsiyalari bilan", d: "hard" }
+  ];
+
+  const grid = document.getElementById('hw-grid');
+  grid.innerHTML = tasks.map((t, i) => `
+    <div class="hw-card">
+      <div class="hw-num">Mashq #${i + 1}</div>
+      <div class="hw-title">${t.q}</div>
+      <span class="badge badge-${t.d}">${t.d === 'easy' ? '🟢 Oson' : t.d === 'medium' ? '🟡 O\'rta' : '🔴 Qiyin'}</span>
+    </div>
+  `).join('');
+}
+
+// ===== GENERATE 50 QUIZ QUESTIONS =====
+function generateQuiz() {
+  const questions = [
+    { q: "Dict qanday qavslar ichida yoziladi?", o: ["()", "[]", "{}", "<>"], a: 2 },
+    { q: "Dict dagi kalitlar qanday bo'lishi kerak?", o: ["Takrorlanmaydigan", "Faqat string", "Faqat son", "Har qanday"], a: 0 },
+    { q: "dict.get('x') natijasi kalit topilmasa nima?", o: ["Xato", "0", "None", "False"], a: 2 },
+    { q: "Dict ga yangi element qo'shish uchun?", o: ["append()", "add()", "d[key]=val", "insert()"], a: 2 },
+    { q: "keys() metodi nima qaytaradi?", o: ["Qiymatlar", "Kalitlar", "Juftliklar", "Uzunlik"], a: 1 },
+    { q: "values() metodi nima qaytaradi?", o: ["Kalitlar", "Uzunlik", "Qiymatlar", "Indekslar"], a: 2 },
+    { q: "items() metodi nima qaytaradi?", o: ["Kalitlar", "Qiymatlar", "Tuple juftliklar", "List"], a: 2 },
+    { q: "pop() metodi nima qiladi?", o: ["Oxiriga qo'shadi", "Kalit bo'yicha o'chiradi", "Barchasini o'chiradi", "Nusxa oladi"], a: 1 },
+    { q: "clear() metodi nima qiladi?", o: ["Bitta o'chiradi", "Dict ni o'chiradi", "Hammasini tozalaydi", "Nusxa oladi"], a: 2 },
+    { q: "update() metodi nima qiladi?", o: ["O'chiradi", "Yangilaydi", "Saralaydi", "Nusxalaydi"], a: 1 },
+    { q: "copy() — bu qanday nusxa?", o: ["Deep copy", "Shallow copy", "Hard copy", "Soft copy"], a: 1 },
+    { q: "len(d) nima qaytaradi?", o: ["Xotira hajmi", "Elementlar soni", "Kalit uzunligi", "Qiymat soni"], a: 1 },
+    { q: "'x' in d nima tekshiradi?", o: ["Qiymat mavjudmi", "Kalit mavjudmi", "Indeks mavjudmi", "Type tekshiradi"], a: 1 },
+    { q: "setdefault() nima qiladi?", o: ["Kalit bo'lmasa qo'shadi", "O'chiradi", "Yangilaydi", "Saralaydi"], a: 0 },
+    { q: "Nested dict bu nima?", o: ["Bo'sh dict", "Dict ichida dict", "Dict ro'yxati", "Tuple dict"], a: 1 },
+    { q: "Dict comprehension sintaksisi qanday?", o: ["{k:v for k,v in ...}", "[k:v for ...]", "(k:v for ...)", "dict(k,v for ...)"], a: 0 },
+    { q: "zip(a,b) nima qaytaradi?", o: ["Dict", "List", "zip object", "Tuple"], a: 2 },
+    { q: "dict(zip(keys,vals)) nima yaratadi?", o: ["List", "Tuple", "Dict", "Set"], a: 2 },
+    { q: "popitem() nima o'chiradi?", o: ["Birinchi elementni", "Oxirgi elementni", "Tasodifiy", "Eng kattani"], a: 1 },
+    { q: "fromkeys() nima yaratadi?", o: ["Bo'sh dict", "Bir xil qiymatli dict", "Nested dict", "List"], a: 1 },
+    { q: "d1 | d2 qaysi versiyadan ishlaydi?", o: ["3.6", "3.7", "3.8", "3.9"], a: 3 },
+    { q: "**kwargs nima qabul qiladi?", o: ["List", "Tuple", "Dict", "Set"], a: 2 },
+    { q: "Dict kaliti bo'la oladigan tur?", o: ["list", "dict", "tuple", "set"], a: 2 },
+    { q: "Dict kaliti bo'la olmaydigan tur?", o: ["str", "int", "list", "tuple"], a: 2 },
+    { q: "json.loads() nima qiladi?", o: ["Dict->JSON", "JSON->Dict", "Dict->List", "JSON->List"], a: 1 },
+    { q: "json.dumps() nima qiladi?", o: ["JSON->Dict", "Dict->JSON", "List->Dict", "Dict->Set"], a: 1 },
+    { q: "Dict tartibli (ordered) mi? (3.7+)", o: ["Ha", "Yo'q", "Ba'zan", "Faqat sorted"], a: 0 },
+    { q: "del d['x'] nima qiladi?", o: ["Qiymatni 0 ga o'rnatadi", "Kalit-qiymatni o'chiradi", "Dict ni o'chiradi", "Xato beradi"], a: 1 },
+    { q: "d.get('x', 5) — 'x' yo'q bo'lsa natija?", o: ["None", "Xato", "5", "0"], a: 2 },
+    { q: "max(d, key=d.get) nima qaytaradi?", o: ["Eng katta qiymat", "Eng katta kalit", "Eng katta qiymatli kalit", "Xato"], a: 2 },
+    { q: "Dict da takroriy kalit bo'lsa nima bo'ladi?", o: ["Xato", "Ikkalasi saqlanadi", "Oxirgisi qoladi", "Birinchisi qoladi"], a: 2 },
+    { q: "type({}) natijasi nima?", o: ["<class 'set'>", "<class 'dict'>", "<class 'list'>", "<class 'tuple'>"], a: 1 },
+    { q: "Bo'sh set yaratish uchun?", o: ["{}", "set()", "[]", "()"], a: 1 },
+    { q: "d = {} — bu nima yaratadi?", o: ["Set", "Dict", "List", "Tuple"], a: 1 },
+    { q: "Dict ni string ga aylantirish?", o: ["str(d)", "d.string()", "d.toStr()", "format(d)"], a: 0 },
+    { q: "Dict ni for bilan aylantirsak nima keladi?", o: ["Qiymatlar", "Kalitlar", "Juftliklar", "Indekslar"], a: 1 },
+    { q: "sum(d.values()) nima hisoblaydi?", o: ["Kalitlar yig'indisi", "Qiymatlar yig'indisi", "Elementlar soni", "Xato beradi"], a: 1 },
+    { q: "sorted(d) nima saralaydi?", o: ["Qiymatlarni", "Kalitlarni", "Juftliklarni", "Uzunlikni"], a: 1 },
+    { q: "dict.fromkeys(['a','b'], 0) natijasi?", o: ["{'a':0,'b':0}", "[0,0]", "('a','b')", "Xato"], a: 0 },
+    { q: "d = dict(a=1, b=2) to'g'rimi?", o: ["Ha", "Yo'q", "Faqat Python 3.9+", "Sintaksis xato"], a: 0 },
+    { q: "Dict dagi barcha qiymatlar bir xil turda bo'lishi shartmi?", o: ["Ha", "Yo'q", "Faqat string", "Faqat son"], a: 1 },
+    { q: "any() dict bilan ishlasa nima tekshiradi?", o: ["Qiymatlarni", "Kalitlarni", "Kamida bitta True kalit", "Uzunlikni"], a: 2 },
+    { q: "all() dict bilan ishlasa?", o: ["Barcha qiymatlar True", "Barcha kalitlar True", "Hammasini tekshiradi", "Xato beradi"], a: 1 },
+    { q: "{**d1, **d2} nima qiladi?", o: ["O'chiradi", "Birlashtiradi", "Saralaydi", "Filtrlaydi"], a: 1 },
+    { q: "Dict da slicing (d[1:3]) ishlaydimu?", o: ["Ha", "Yo'q", "Faqat str kalitlarda", "Python 3.10+"], a: 1 },
+    { q: "d.items() qaytaradigan tur?", o: ["list", "tuple", "dict_items", "dict_keys"], a: 2 },
+    { q: "Qaysi biri immutable (o'zgarmas)?", o: ["list", "dict", "set", "tuple"], a: 3 },
+    { q: "Dict kalit uchun hash bo'lishi kerakmi?", o: ["Ha", "Yo'q", "Ba'zan", "Faqat string"], a: 0 },
+    { q: "d = {1: 'a', 1: 'b'} — d[1] nima?", o: ["'a'", "'b'", "Xato", "['a','b']"], a: 1 },
+    { q: "Dict ni JSON faylga yozish uchun?", o: ["json.dump()", "json.dumps()", "json.write()", "json.save()"], a: 0 }
+  ];
+
+  const container = document.getElementById('quiz-container');
+  container.innerHTML = questions.map((q, i) => `
+    <div class="quiz-card" data-correct="${q.a}" id="quiz-${i}">
+      <div class="quiz-q">${i + 1}. ${q.q}</div>
+      <div class="quiz-options">
+        ${q.o.map((opt, j) => `
+          <div class="quiz-opt" onclick="selectOption(${i}, ${j}, this)">
+            <span class="letter">${'ABCD'[j]}</span>
+            <span>${opt}</span>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+const userAnswers = {};
+function selectOption(qIdx, optIdx, el) {
+  const card = document.getElementById(`quiz-${qIdx}`);
+  card.querySelectorAll('.quiz-opt').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  userAnswers[qIdx] = optIdx;
+}
+
+function checkQuiz() {
+  let correct = 0, total = 50;
+  for (let i = 0; i < total; i++) {
+    const card = document.getElementById(`quiz-${i}`);
+    const correctIdx = +card.dataset.correct;
+    const opts = card.querySelectorAll('.quiz-opt');
+    opts.forEach(o => o.style.pointerEvents = 'none');
+    if (userAnswers[i] !== undefined) {
+      if (userAnswers[i] === correctIdx) {
+        opts[userAnswers[i]].classList.add('correct');
+        correct++;
+      } else {
+        opts[userAnswers[i]].classList.add('wrong');
+        opts[correctIdx].classList.add('correct');
+      }
+    } else {
+      opts[correctIdx].classList.add('correct');
+    }
+  }
+  const pct = Math.round(correct / total * 100);
+  const answered = Object.keys(userAnswers).length;
+  document.getElementById('resultScore').textContent = pct + '%';
+  document.getElementById('resultText').textContent = `${correct} ta to'g'ri, ${answered - correct} ta xato, ${total - answered} ta javobsiz (${answered} tadan)`;
+  document.getElementById('resultBar').style.width = pct + '%';
+  document.getElementById('quizResult').classList.add('show');
+  document.getElementById('quizResult').scrollIntoView({ behavior: 'smooth' });
+  showToast(`Natija: ${pct}% — ${correct}/${total}`);
+}
+
+function resetQuiz() {
+  for (let i = 0; i < 50; i++) {
+    const card = document.getElementById(`quiz-${i}`);
+    if (!card) continue;
+    card.querySelectorAll('.quiz-opt').forEach(o => {
+      o.classList.remove('selected', 'correct', 'wrong');
+      o.style.pointerEvents = '';
+    });
+  }
+  Object.keys(userAnswers).forEach(k => delete userAnswers[k]);
+  document.getElementById('quizResult').classList.remove('show');
+  showToast('🔄 Test qayta boshlandi!');
+}
+
+// ===== GENERATE PROJECTS =====
+function generateProjects() {
+  const projects = [
+    {
+      icon: "📱", color: "rgba(0,255,136,0.15)", title: "Telefon Daftar",
+      desc: "Dict asosida kontaktlar boshqarish tizimi — qo'shish, qidirish, o'chirish.",
+      code: `<span class="cm"># 📱 Telefon Daftar — CRUD</span>
+<span class="nb">daftar</span> = {}
+
+<span class="kw">def</span> <span class="fn">qoshish</span>(<span class="nb">ism</span>, <span class="nb">raqam</span>):
+    <span class="nb">daftar</span>[<span class="nb">ism</span>] = <span class="nb">raqam</span>
+    <span class="fn">print</span>(<span class="kw">f</span><span class="st">"✅ {ism} qo'shildi"</span>)
+
+<span class="kw">def</span> <span class="fn">qidirish</span>(<span class="nb">ism</span>):
+    <span class="nb">raqam</span> = <span class="nb">daftar</span>.<span class="fn">get</span>(<span class="nb">ism</span>)
+    <span class="kw">if</span> <span class="nb">raqam</span>:
+        <span class="fn">print</span>(<span class="kw">f</span><span class="st">"📱 {ism}: {raqam}"</span>)
+    <span class="kw">else</span>:
+        <span class="fn">print</span>(<span class="kw">f</span><span class="st">"❌ {ism} topilmadi"</span>)
+
+<span class="kw">def</span> <span class="fn">ochirish</span>(<span class="nb">ism</span>):
+    <span class="kw">if</span> <span class="nb">ism</span> <span class="kw">in</span> <span class="nb">daftar</span>:
+        <span class="kw">del</span> <span class="nb">daftar</span>[<span class="nb">ism</span>]
+        <span class="fn">print</span>(<span class="kw">f</span><span class="st">"🗑️ {ism} o'chirildi"</span>)
+
+<span class="kw">def</span> <span class="fn">hammasi</span>():
+    <span class="kw">for</span> <span class="nb">ism</span>, <span class="nb">raqam</span> <span class="kw">in</span> <span class="nb">daftar</span>.<span class="fn">items</span>():
+        <span class="fn">print</span>(<span class="kw">f</span><span class="st">"  {ism}: {raqam}"</span>)
+
+<span class="cm"># Ishlatish</span>
+<span class="fn">qoshish</span>(<span class="st">"Ali"</span>, <span class="st">"+998901234567"</span>)
+<span class="fn">qoshish</span>(<span class="st">"Vali"</span>, <span class="st">"+998907654321"</span>)
+<span class="fn">qidirish</span>(<span class="st">"Ali"</span>)
+<span class="fn">hammasi</span>()`,
+      output: "✅ Ali qo'shildi\n✅ Vali qo'shildi\n📱 Ali: +998901234567\n  Ali: +998901234567\n  Vali: +998907654321"
+    },
+    {
+      icon: "📦", color: "rgba(168,85,247,0.15)", title: "Inventory System",
+      desc: "Mahsulotlar ombori — qo'shish, sotish, qoldiqni tekshirish.",
+      code: `<span class="cm"># 📦 Inventory System</span>
+<span class="nb">ombor</span> = {}
+
+<span class="kw">def</span> <span class="fn">mahsulot_qosh</span>(<span class="nb">nomi</span>, <span class="nb">soni</span>, <span class="nb">narxi</span>):
+    <span class="nb">ombor</span>[<span class="nb">nomi</span>] = {<span class="st">"soni"</span>: <span class="nb">soni</span>, <span class="st">"narxi"</span>: <span class="nb">narxi</span>}
+    <span class="fn">print</span>(<span class="kw">f</span><span class="st">"📦 {nomi} — {soni} dona qo'shildi"</span>)
+
+<span class="kw">def</span> <span class="fn">sotish</span>(<span class="nb">nomi</span>, <span class="nb">dona</span>):
+    <span class="kw">if</span> <span class="nb">nomi</span> <span class="kw">in</span> <span class="nb">ombor</span> <span class="kw">and</span> <span class="nb">ombor</span>[<span class="nb">nomi</span>][<span class="st">"soni"</span>] >= <span class="nb">dona</span>:
+        <span class="nb">ombor</span>[<span class="nb">nomi</span>][<span class="st">"soni"</span>] -= <span class="nb">dona</span>
+        <span class="nb">tushum</span> = <span class="nb">dona</span> * <span class="nb">ombor</span>[<span class="nb">nomi</span>][<span class="st">"narxi"</span>]
+        <span class="fn">print</span>(<span class="kw">f</span><span class="st">"💰 {dona} ta {nomi} sotildi — {tushum:,} so'm"</span>)
+    <span class="kw">else</span>:
+        <span class="fn">print</span>(<span class="st">"❌ Yetarli mahsulot yo'q!"</span>)
+
+<span class="kw">def</span> <span class="fn">hisobot</span>():
+    <span class="nb">jami</span> = <span class="nu">0</span>
+    <span class="kw">for</span> <span class="nb">nom</span>, <span class="nb">info</span> <span class="kw">in</span> <span class="nb">ombor</span>.<span class="fn">items</span>():
+        <span class="nb">qiymat</span> = <span class="nb">info</span>[<span class="st">"soni"</span>] * <span class="nb">info</span>[<span class="st">"narxi"</span>]
+        <span class="nb">jami</span> += <span class="nb">qiymat</span>
+        <span class="fn">print</span>(<span class="kw">f</span><span class="st">"  {nom}: {info['soni']} dona x {info['narxi']:,} = {qiymat:,}"</span>)
+    <span class="fn">print</span>(<span class="kw">f</span><span class="st">"  Jami: {jami:,} so'm"</span>)
+
+<span class="fn">mahsulot_qosh</span>(<span class="st">"Telefon"</span>, <span class="nu">10</span>, <span class="nu">3000000</span>)
+<span class="fn">mahsulot_qosh</span>(<span class="st">"Noutbuk"</span>, <span class="nu">5</span>, <span class="nu">8000000</span>)
+<span class="fn">sotish</span>(<span class="st">"Telefon"</span>, <span class="nu">3</span>)
+<span class="fn">hisobot</span>()`,
+      output: "📦 Telefon — 10 dona qo'shildi\n📦 Noutbuk — 5 dona qo'shildi\n💰 3 ta Telefon sotildi — 9,000,000 so'm\n  Telefon: 7 dona x 3,000,000 = 21,000,000\n  Noutbuk: 5 dona x 8,000,000 = 40,000,000\n  Jami: 61,000,000 so'm"
+    },
+    {
+      icon: "🎓", color: "rgba(0,229,255,0.15)", title: "Student Panel",
+      desc: "Talabalar boshqaruv paneli — ro'yxatga olish, baholar, statistika.",
+      code: `<span class="cm"># 🎓 Student Panel</span>
+<span class="nb">talabalar</span> = {}
+<span class="nb">next_id</span> = <span class="nu">1</span>
+
+<span class="kw">def</span> <span class="fn">royxatga_ol</span>(<span class="nb">ism</span>, <span class="nb">guruh</span>):
+    <span class="kw">global</span> <span class="nb">next_id</span>
+    <span class="nb">talabalar</span>[<span class="nb">next_id</span>] = {
+        <span class="st">"ism"</span>: <span class="nb">ism</span>, <span class="st">"guruh"</span>: <span class="nb">guruh</span>,
+        <span class="st">"baholar"</span>: []
+    }
+    <span class="fn">print</span>(<span class="kw">f</span><span class="st">"✅ ID:{next_id} — {ism} ro'yxatga olindi"</span>)
+    <span class="nb">next_id</span> += <span class="nu">1</span>
+
+<span class="kw">def</span> <span class="fn">baho_qoy</span>(<span class="nb">sid</span>, <span class="nb">baho</span>):
+    <span class="kw">if</span> <span class="nb">sid</span> <span class="kw">in</span> <span class="nb">talabalar</span>:
+        <span class="nb">talabalar</span>[<span class="nb">sid</span>][<span class="st">"baholar"</span>].<span class="fn">append</span>(<span class="nb">baho</span>)
+        <span class="fn">print</span>(<span class="kw">f</span><span class="st">"📝 {talabalar[sid]['ism']} ga {baho} baho qo'yildi"</span>)
+
+<span class="kw">def</span> <span class="fn">statistika</span>():
+    <span class="kw">for</span> <span class="nb">sid</span>, <span class="nb">info</span> <span class="kw">in</span> <span class="nb">talabalar</span>.<span class="fn">items</span>():
+        <span class="nb">b</span> = <span class="nb">info</span>[<span class="st">"baholar"</span>]
+        <span class="nb">ort</span> = <span class="fn">sum</span>(<span class="nb">b</span>) / <span class="fn">len</span>(<span class="nb">b</span>) <span class="kw">if</span> <span class="nb">b</span> <span class="kw">else</span> <span class="nu">0</span>
+        <span class="fn">print</span>(<span class="kw">f</span><span class="st">"  {info['ism']} | O'rtacha: {ort:.1f}"</span>)
+
+<span class="fn">royxatga_ol</span>(<span class="st">"Sardor"</span>, <span class="st">"Python-101"</span>)
+<span class="fn">royxatga_ol</span>(<span class="st">"Jasur"</span>, <span class="st">"Python-101"</span>)
+<span class="fn">baho_qoy</span>(<span class="nu">1</span>, <span class="nu">5</span>)
+<span class="fn">baho_qoy</span>(<span class="nu">1</span>, <span class="nu">4</span>)
+<span class="fn">baho_qoy</span>(<span class="nu">2</span>, <span class="nu">3</span>)
+<span class="fn">statistika</span>()`,
+      output: "✅ ID:1 — Sardor ro'yxatga olindi\n✅ ID:2 — Jasur ro'yxatga olindi\n📝 Sardor ga 5 baho qo'yildi\n📝 Sardor ga 4 baho qo'yildi\n📝 Jasur ga 3 baho qo'yildi\n  Sardor | O'rtacha: 4.5\n  Jasur | O'rtacha: 3.0"
+    },
+    {
+      icon: "🗄️", color: "rgba(244,114,182,0.15)", title: "Mini Database",
+      desc: "To'liq CRUD (Create, Read, Update, Delete) operatsiyalari bilan mini ma'lumotlar bazasi.",
+      code: `<span class="cm"># 🗄️ Mini Database — CRUD</span>
+<span class="kw">class</span> <span class="fn">MiniDB</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="nb">self</span>):
+        <span class="nb">self</span>.<span class="nb">data</span> = {}
+        <span class="nb">self</span>.<span class="nb">counter</span> = <span class="nu">0</span>
+
+    <span class="kw">def</span> <span class="fn">create</span>(<span class="nb">self</span>, **<span class="nb">fields</span>):
+        <span class="nb">self</span>.<span class="nb">counter</span> += <span class="nu">1</span>
+        <span class="nb">self</span>.<span class="nb">data</span>[<span class="nb">self</span>.<span class="nb">counter</span>] = <span class="nb">fields</span>
+        <span class="fn">print</span>(<span class="kw">f</span><span class="st">"✅ Yozuv #{self.counter} yaratildi"</span>)
+        <span class="kw">return</span> <span class="nb">self</span>.<span class="nb">counter</span>
+
+    <span class="kw">def</span> <span class="fn">read</span>(<span class="nb">self</span>, <span class="nb">id</span>):
+        <span class="kw">return</span> <span class="nb">self</span>.<span class="nb">data</span>.<span class="fn">get</span>(<span class="nb">id</span>, <span class="st">"Topilmadi"</span>)
+
+    <span class="kw">def</span> <span class="fn">update</span>(<span class="nb">self</span>, <span class="nb">id</span>, **<span class="nb">fields</span>):
+        <span class="kw">if</span> <span class="nb">id</span> <span class="kw">in</span> <span class="nb">self</span>.<span class="nb">data</span>:
+            <span class="nb">self</span>.<span class="nb">data</span>[<span class="nb">id</span>].<span class="fn">update</span>(<span class="nb">fields</span>)
+            <span class="fn">print</span>(<span class="kw">f</span><span class="st">"📝 Yozuv #{id} yangilandi"</span>)
+
+    <span class="kw">def</span> <span class="fn">delete</span>(<span class="nb">self</span>, <span class="nb">id</span>):
+        <span class="kw">if</span> <span class="nb">id</span> <span class="kw">in</span> <span class="nb">self</span>.<span class="nb">data</span>:
+            <span class="kw">del</span> <span class="nb">self</span>.<span class="nb">data</span>[<span class="nb">id</span>]
+            <span class="fn">print</span>(<span class="kw">f</span><span class="st">"🗑️ Yozuv #{id} o'chirildi"</span>)
+
+<span class="nb">db</span> = <span class="fn">MiniDB</span>()
+<span class="nb">db</span>.<span class="fn">create</span>(<span class="nb">ism</span>=<span class="st">"Ali"</span>, <span class="nb">yosh</span>=<span class="nu">20</span>)
+<span class="nb">db</span>.<span class="fn">create</span>(<span class="nb">ism</span>=<span class="st">"Vali"</span>, <span class="nb">yosh</span>=<span class="nu">22</span>)
+<span class="fn">print</span>(<span class="nb">db</span>.<span class="fn">read</span>(<span class="nu">1</span>))
+<span class="nb">db</span>.<span class="fn">update</span>(<span class="nu">1</span>, <span class="nb">yosh</span>=<span class="nu">21</span>)
+<span class="fn">print</span>(<span class="nb">db</span>.<span class="fn">read</span>(<span class="nu">1</span>))`,
+      output: "✅ Yozuv #1 yaratildi\n✅ Yozuv #2 yaratildi\n{'ism': 'Ali', 'yosh': 20}\n📝 Yozuv #1 yangilandi\n{'ism': 'Ali', 'yosh': 21}"
+    }
+  ];
+
+  const container = document.getElementById('projects-content');
+  container.innerHTML = projects.map(p => `
+    <div class="project-card">
+      <div class="project-header">
+        <div class="project-icon" style="background:${p.color}">${p.icon}</div>
+        <div>
+          <h3 style="font-size:1.1rem;font-weight:700">${p.title}</h3>
+          <p style="font-size:.85rem;color:var(--text2)">${p.desc}</p>
+        </div>
+      </div>
+      <div class="project-body">
+        <div class="code-block">
+          <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang">python</span><button class="copy-btn" onclick="copyCode(this)">📋 Nusxa</button></div>
+          <div class="code-body">${p.code}</div>
+        </div>
+        <div class="output-block"><span class="output-label">Natija</span>${p.output}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ===== GENERATE FAQ =====
+function generateFAQ() {
+  const faqs = [
+    { q: "Dict va List o'rtasidagi farq nima?", a: "List tartiblangan va indeks bilan ishlaydi (0, 1, 2...). Dict esa kalit-qiymat juftliklari bilan ishlaydi. Dict da elementga kalit orqali murojaat qilinadi." },
+    { q: "Dict kaliti sifatida nimalarni ishlatish mumkin?", a: "Faqat hashable (o'zgarmas) turlar — string, int, float, tuple. List, dict, set kalit bo'la olmaydi, chunki ular mutable (o'zgaruvchan)." },
+    { q: "Dict tartiblangan mi?", a: "Python 3.7 dan boshlab dict kiritish tartibini saqlaydi. Ammo 3.6 va undan oldingi versiyalarda tartib kafolatlanmagan." },
+    { q: "get() va [] farqi nima?", a: "d['key'] — kalit yo'q bo'lsa KeyError xatosi beradi. d.get('key') esa None qaytaradi (yoki belgilangan default qiymatni). get() xavfsizroq." },
+    { q: "Dict ni qanday saralash mumkin?", a: "sorted(d.items()) — kalitlar bo'yicha. sorted(d.items(), key=lambda x: x[1]) — qiymatlar bo'yicha saralaydi." },
+    { q: "Nested dict nima va qachon ishlatiladi?", a: "Dict ichida dict — bu murakkab ma'lumotlar tuzilmasi. Ma'lumotlar bazasi yozuvlari, JSON ma'lumotlari, konfiguratsiya fayllari kabi joylarda ishlatiladi." },
+    { q: "Dict comprehension qachon ishlatiladi?", a: "Oddiy dict yaratish uchun bir qator kod yozmoqchi bo'lsangiz. Masalan: {x: x**2 for x in range(10)} — bu 10 ta element yaratadi bitta qatorda." },
+    { q: "copy() va deepcopy() farqi nima?", a: "copy() — shallow (yuzaki) nusxa oladi. Ichki obyektlar havolalar sifatida qoladi. deepcopy() — to'liq mustaqil nusxa yaratadi, ichki obyektlarni ham nusxalaydi." }
+  ];
+
+  const container = document.getElementById('faq-content');
+  container.innerHTML = faqs.map(f => `
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q"><span>${f.q}</span><span class="arrow">▼</span></div>
+      <div class="faq-a"><p>${f.a}</p></div>
+    </div>
+  `).join('');
+}
+
+// ===== INIT =====
+document.addEventListener('DOMContentLoaded', () => {
+  generateSinfIshi();
+  generateHomework();
+  generateQuiz();
+  generateProjects();
+  generateFAQ();
+  setTimeout(buildSearchIndex, 3000);
+});
+
+// Close sidebar on link click (mobile)
+document.querySelectorAll('#sidebar a').forEach(a => {
+  a.addEventListener('click', () => {
+    if (window.innerWidth <= 1024) {
+      document.getElementById('sidebar').classList.remove('open');
+      document.getElementById('sidebarOverlay').classList.remove('show');
+    }
+  });
+});
+
+// Close search on click outside
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.nav-search')) {
+    document.getElementById('searchResults').classList.remove('show');
+  }
+});
+</script>
+</body>
+</html>
